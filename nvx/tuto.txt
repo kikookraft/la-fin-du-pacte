@@ -1,0 +1,39 @@
+init- (Zach.png; 650,225; 300,500; None; bg.jpg; lava.wav; True)
+title (La Fin Du Pacte - Le Tutoriel)
+dialg (3, 300)
+Bienvenue dans ce test de niveaux !
+Tu vas beaucoup aimer (je pense) &é(-è_çà)=É
+Que veut tu faire en premier ?
+markr (1)
+choix (3, A - Attendre 5 sec, B - Parler, C - La réponse C, waitthe5sec, speeak, wasted)
+
+waitthe5sec
+init- (Zach.png,kevin.png; 650,225/0,250; 300,500/300,500; None; bg.jpg; lava.wav; True)
+temps (500)
+dialg (3, 300)
+Tu veux un trophé pour etre arrivé ici ?
+A moin que tu n'en veuille pas ...
+Bon je vais quand meme t'en donner un ...
+img-- (assets/trophes.png; 490,310; 100,100)
+sound (assets/sounds/AMBIANCE DE GROTTE - Bruitage Gratuit.mp3)
+temps (1000)
+end--
+
+speeak
+markr (2)
+dialg (2, 200)
+Donc tu veux parler ?
+Alors si c'est ce que tu veux, c'est partis!
+markr (3)
+dialg (3, 300)
+Quand j'était petit, ma grand mère m'aimait...
+Elle me faisait souvent des gâteaux...
+Mais elle et décédé du COVID-19...
+mort- (Toi aussi mdr ☺)
+end--
+
+wasted
+markr (75)
+video (assets/movies/credit.mp4)
+mort- (Tu l'as mérité !)
+end--

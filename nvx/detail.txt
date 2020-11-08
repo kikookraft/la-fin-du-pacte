@@ -1,0 +1,78 @@
+end--
+
+Met fin au niveau et ramene au menu
+
+
+end++
+
+Met fin au niveau, ramene au menu et fait passer au niveau suivant
+
+
+init- (Zach.png,kevin.png; 650,225/0,250; 300,500/300,500; None; bg.jpg; lava.wav; True)
+
+initialisation du menu avec 7 arguments:
+1 er argument : Chemin des images des personnages (Zach.png,kevin.png;) separer les personnages par des virgules
+2eme : position des personnages. chaque personnage possede un groupe des 2 nombre séparé par des virgules et es groupes sont séparés par des slash '/'
+3eme : taille des images des personnages, fonctionne comme pour la position
+4eme : Arme du personnage (ne fonctionne pas pour l'instant) pour afficher une arme, fair comme pour afficher un personnage.
+5eme : image de fond d'ecran
+6eme : musique du niveau
+7eme : definit si la musique doit etre rechargée, si c'est a True, la musique spécifiée avant sera jouée, sinon si c'est sur False aucun changement n'est fait
+
+
+title ("Titre")
+
+Changer le Titre de la fenetre
+
+
+
+temps (500)
+
+Temps a attendre en centieme de secondes. 'temps (100)' attendra 1 seconde
+
+
+
+dialg (2, 6000)
+"Ceci est le premier texte"
+"Ceci le deuxieueème"
+
+Sert a afficher les dialogues.
+1er argument = Nombres de lignes a afficher
+2eme = temp d'attente avant l'affichage du texte suivant en centieme de secondes (comme au dessus)
+L'initialisation du texte est syncronisée avec l'initialisation précédente
+
+
+
+choix (nbchoix=3, "Choix1", "Choix2", "Choix3", goto1="marque1", goto2="marque2", goto3="marque3")
+
+1er argument = nombre de choix, 2-3 (et 4) = texte des choix, 5-6(et 7): mot clé a aller après.
+
+
+
+markr 2
+
+marqueur indiquant la position a laquelle le joueur reviendra si il quitte le jeux (sauf si un autre marqueur est spécifié après)
+
+
+
+video (chemin de la video)
+
+video a afficher
+
+
+
+img-- (kevin.png; 0,0; 500,500)
+
+Image a afficher suivit de la position et de la taille
+
+
+
+sound (sounds/lava.wav)
+
+jouer des sons, utilisé pour les bruitages
+
+
+
+mort- (CHEEEEEEEH)
+
+Faire crever le joueur avec la raison entre parenthese
