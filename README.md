@@ -1,2 +1,2 @@
-# la-fin-du-pacte
-Une histoire interactive créée en python
+# La Fin Du Pacte
+Une histoire interactive créée en python...
