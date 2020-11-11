@@ -9,14 +9,14 @@ Bienvenu sur le repos de **La Fin Du Pacte** !!
 Le jeux se structure en plusieurs fichiers.
  
 1. **main.py** qui est le fichier principal, c'est lui qu'il faut lancer pour jouer au jeux!  
-    - ## Pour demmarer le jeux sur linux : 
+    - ## Pour démarer le jeux sur linux : 
         - Ouvrir le terminal dans le dossier `la fin du pacte`
         - Installer les modules necessaires au jeux ( commande : `pip install nom_du_module` ):
             - Pygame
             - Moviepy
         - Faire : `python main.py`
         - Le jeux se lance (normalement)
-    - ## Pour demarer le jeux sur windows:
+    - ## Pour démarer le jeux sur windows:
         - Installer [Python](https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe)
         - Ouvrir un terminal dans le dossier la fin du pacte (en faisant `SHIFT + Click droit  >>  Ouvrir un terminal powershell`)
         - Installer les modules comme sur linux (voir ci-dessus)
