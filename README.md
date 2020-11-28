@@ -102,8 +102,93 @@ Cet exemple comprend toutes les possibilités, donc amuse-toi a modifier ca si t
    
 Pour tester ce niveau, remplace un fichier texte deja existant (ton niveau actuel par exemple) **mais n'oublie pas de le sauvegarder avant de le changer !** 
    
-Ensuite lance le jeux et atteint le niveau concerné.
+Ensuite lance le jeux et atteint le niveau concerné.   
+   
 
-> La documentation du fonctionnement des commandes est en cour...
-> 
-> 
+
+### Commandes
+
+`end--`
+
+Met fin au niveau et ramene au menu
+
+
+`end++`
+
+Met fin au niveau, ramene au menu et fait passer au niveau suivant
+
+
+`init- (Zach.png,kevin.png; 650,225/0,250; 300,500/300,500; None; bg.jpg; lava.wav; True)`
+
+initialisation du menu avec 7 arguments (chaque arguments est séparé par un point virgule et un espace `; `):   
+1 er argument : Chemin des images des personnages (Zach.png,kevin.png;). sépare les personnages par des virgules   
+2eme : position des personnages. chaque personnage possède un groupe des 2 nombre séparé par des virgules et les groupes sont séparés par des slash `/`   
+3eme : taille des images des personnages, fonctionne comme pour la position   
+4eme : Arme du personnage (ne fonctionne pas pour l'instant) pour afficher une arme, faire afficher l'arme comme pour un personnage.   
+5eme : image de fond d'ecran   
+6eme : musique du niveau   
+7eme : definit si la musique doit etre rechargée, si c'est a True, la musique s'arrete et celle spécifiée sera jouée, sinon si c'est sur False aucun changement n'est fait et l'ancienne musique continue   
+
+
+`title ("Titre")`
+
+Changer le Titre de la fenetre
+
+
+
+`temps (500)`
+
+Temps a attendre en centieme de secondes. `temps (100)` attendra 1 seconde.   
+   
+      
+     
+
+```
+dialg (2, 6000)
+"Ceci est le premier texte"
+"Ceci le deuxieueème"
+```
+
+Sert a afficher les dialogues.
+1er paramètre = Nombres de lignes a afficher (les lignes de texte affiché sont ecrites en dessous de l'appel de la fonction)   
+2eme = temp d'attente avant l'affichage du texte suivant en centième de secondes (comme au dessus)
+L'initialisation du texte est syncronisée avec l'initialisation précédente (la musique/les personnages et le fond restera le même)   
+
+
+
+`choix (nbchoix=3, "Choix1", "Choix2", "Choix3", goto1="marque1", goto2="marque2", goto3="marque3")`
+
+1er argument = nombre de choix   
+Les 2 ou 3 arguments suivants (en fonction du nombre de choix) : texte des choix   
+2 (ou 3) arguments suivant: mot clé de la suite de l'histoire .   
+C'est a dire que si tu ecrit `masse`, le jeux va chercher ce mot dans tout le fichier texte et quand il le trouve il continue l'histoire (utilisé pour les choix pour amener a des moments differents de l'histoire du personnage).    
+
+
+
+`markr 2`
+
+marqueur indiquant la position a laquelle le joueur reviendra si il quitte le jeux (sauf si un autre marqueur est spécifié après)
+
+
+
+`video (assets/test.mp4)`
+
+video a afficher
+
+
+
+`img-- (kevin.png; 0,0; 500,500)`
+
+Image a afficher suivit de la position et de la taille
+
+
+
+`sound (sounds/lava.wav)`
+
+jouer des sons, utilisé pour les bruitages
+
+
+
+`mort- (CHEEEEEEEH)`
+
+Faire crever le joueur en affichant `CHEEEEEEEH` .
