@@ -4,6 +4,9 @@ Une histoire interactive créée en python...
 
 Bienvenu sur le repos de **La Fin Du Pacte** !!
 
+### [Télécharger le jeux](https://github.com/kikookraft/la-fin-du-pacte/archive/main.zip) (l'archive fait 1.5Go, peut prendre du temps a télécharger)
+## **Le projet est toujour en cour de création !!!**
+
 ---
 
 Le jeux se structure en plusieurs fichiers.
@@ -56,54 +59,6 @@ Ce que fait le jeux, c'est qu'il lit un fichier texte ligne par ligne et execute
 Regarde dans les fichiers par toi-meme, tu verras.   
    
       
-Pour commencer voici un exemple :
-```
-init- (Zach.png; 650,225; 300,500; None; bg.jpg; lava.wav; True)
-title (La Fin Du Pacte - Le Tutoriel)
-dialg (3; 300)
-Bienvenue dans ce test de niveaux !
-Tu vas beaucoup aimer (je pense) &é(-è_çà)=É
-Que veut tu faire en premier ?
-markr (1)
-choix (3; A - Attendre 5 sec; B - Parler; C - La réponse C; waitthe5sec; speeak; wasted)
-
-waitthe5sec
-init- (Zach.png,kevin.png; 650,225/0,250; 300,500/300,500; None; bg.jpg; lava.wav; True)
-temps (500)
-dialg (3; 300)
-Tu veux un trophé pour etre arrivé ici ?
-A moin que tu n'en veuille pas ...
-Bon je vais quand meme t'en donner un ...
-img-- (assets/trophes.png; 490,310; 100,100)
-sound (assets/sounds/AMBIANCE DE GROTTE - Bruitage Gratuit.mp3)
-temps (1000)
-end++
-
-speeak
-markr (2)
-dialg (2; 200)
-Donc tu veux parler ?
-Alors si c'est ce que tu veux, c'est partis!
-markr (3)
-dialg (3; 300)
-Quand j'était petit, ma grand mère m'aimait...
-Elle me faisait souvent des gâteaux...
-Mais elle et décédé du COVID-19...
-mort- (Toi aussi mdr ☺)
-end--
-
-wasted
-markr (75)
-video (assets/movies/credit.mp4)
-mort- (Tu l'as mérité !)
-end--
-```
-Cet exemple comprend toutes les possibilités, donc amuse-toi a modifier ca si tu en as l'envie !   
-   
-Pour tester ce niveau, remplace un fichier texte deja existant (ton niveau actuel par exemple) **mais n'oublie pas de le sauvegarder avant de le changer !** 
-   
-Ensuite lance le jeux et atteint le niveau concerné.   
-   
 
 
 ### Commandes
@@ -165,10 +120,13 @@ C'est a dire que si tu ecrit `masse`, le jeux va chercher ce mot dans tout le fi
 
 
 
-`markr 2`
+`markr (2)`
 
 marqueur indiquant la position a laquelle le joueur reviendra si il quitte le jeux (sauf si un autre marqueur est spécifié après)
 
+`towait (qqch)`
+
+Recherche dans le fichier texte la ligne qui commence par `qqch` pour continuer le jeux a partir de cet endroit   
 
 
 `video (assets/test.mp4)`
@@ -191,4 +149,54 @@ jouer des sons, utilisé pour les bruitages
 
 `mort- (CHEEEEEEEH)`
 
-Faire crever le joueur en affichant `CHEEEEEEEH` .
+Faire crever le joueur en affichant `CHEEEEEEEH` .   
+   
+
+voici un exemple :
+```
+init- (Zach.png; 650,225; 300,500; None; bg.jpg; lava.wav; True)
+title (La Fin Du Pacte - Le Tutoriel)
+dialg (3; 300)
+Bienvenue dans ce test de niveaux !
+Tu vas beaucoup aimer (je pense) &é(-è_çà)=É
+Que veut tu faire en premier ?
+markr (1)
+choix (3; A - Attendre 5 sec; B - Parler; C - La réponse C; waitthe5sec; speeak; wasted)
+
+waitthe5sec
+init- (Zach.png,kevin.png; 650,225/0,250; 300,500/300,500; None; bg.jpg; lava.wav; True)
+temps (500)
+dialg (3; 300)
+Tu veux un trophé pour etre arrivé ici ?
+A moin que tu n'en veuille pas ...
+Bon je vais quand meme t'en donner un ...
+img-- (assets/trophes.png; 490,310; 100,100)
+sound (assets/sounds/AMBIANCE DE GROTTE - Bruitage Gratuit.mp3)
+temps (1000)
+end++
+
+speeak
+markr (2)
+dialg (2; 200)
+Donc tu veux parler ?
+Alors si c'est ce que tu veux, c'est partis!
+markr (3)
+dialg (3; 300)
+Quand j'était petit, ma grand mère m'aimait...
+Elle me faisait souvent des gâteaux...
+Mais elle et décédé du COVID-19...
+mort- (Toi aussi mdr ☺)
+end--
+
+wasted
+markr (75)
+video (assets/movies/credit.mp4)
+mort- (Tu l'as mérité !)
+end--
+```
+Cet exemple comprend toutes les possibilités, donc amuse-toi a modifier ca si tu en as l'envie !   
+   
+Pour tester ce niveau, remplace un fichier texte deja existant (ton niveau actuel par exemple) **mais n'oublie pas de le sauvegarder avant de le changer !** 
+   
+Ensuite lance le jeux et atteint le niveau concerné.   
+   

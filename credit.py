@@ -4,6 +4,5 @@ from moviepy.editor import *
 class Credit:
         
     def video(self, video):
-        clip = VideoFileClip(video)
-        #clip = clip.volumex(0.3)  #lorsque l'on reduit le volume, le son crash pendant la lecture
+        clip = VideoFileClip(video).resize((1080,720))
         clip.preview(fps=30)

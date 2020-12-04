@@ -183,9 +183,14 @@ while men:
         game.clear(screen)
         pygame.mixer.music.stop()
         fin = game.lvl.play(screen, level, dialog, name)
-        level = fin[0]
-        dialog = fin[1]
-        name = fin[2]
+        if fin != None:
+            level = fin[0]
+            dialog = fin[1]
+            name = fin[2]
+        else:
+            level = 0
+            dialog = 0
+            name = 0
         game.score.save(level,dialog,name)
         pygame.mouse.set_visible(True)
         pygame.event.clear()

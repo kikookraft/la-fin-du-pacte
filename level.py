@@ -24,26 +24,26 @@ class Lvl:
         `background` = image de fond,\n 
         `music` = musique a mettre,\n 
         `statemusic` = activer ou pas la musique'''
-        #mise en forme des variable (les mettre dans les bon format)
-        imgperso = imgperso.split(',')
-        posperso = posperso.split('/')
-        scaleperso = scaleperso.split('/')
-        #image de fond
         background1 = str("assets/bg/"+background)
         bgd = pygame.image.load(background1)
         bgd = pygame.transform.scale(bgd,(1080,720))
         screen.blit(bgd, bgd.get_rect())
         #personnage
-        for perso in imgperso:
-            #print(perso,scaleperso[imgperso.index(perso)].split(","),posperso[imgperso.index(perso)].split(","))
-            boy = pygame.image.load(str("assets/"+str(perso)))
-            scalepersotmp = scaleperso[imgperso.index(perso)].split(",")
-            pospersotmp = posperso[imgperso.index(perso)].split(",")
-            boyr = pygame.transform.scale(boy,(int(scalepersotmp[0]),int(scalepersotmp[1])))
-            screen.blit(boyr,(int(pospersotmp[0]),int(pospersotmp[1])))
+        if imgperso != "None":
+            #mise en forme des variable (les mettre dans les bon format)
+            imgperso = imgperso.split(',')
+            posperso = posperso.split('/')
+            scaleperso = scaleperso.split('/')
+            for perso in imgperso:
+                #print(perso,scaleperso[imgperso.index(perso)].split(","),posperso[imgperso.index(perso)].split(","))
+                boy = pygame.image.load(str("assets/"+str(perso)))
+                scalepersotmp = scaleperso[imgperso.index(perso)].split(",")
+                pospersotmp = posperso[imgperso.index(perso)].split(",")
+                boyr = pygame.transform.scale(boy,(int(scalepersotmp[0]),int(scalepersotmp[1])))
+                screen.blit(boyr,(int(pospersotmp[0]),int(pospersotmp[1])))
 
         #musique
-        if statemusic:
+        if statemusic and music != "None":
             pygame.mixer.music.stop()
             pygame.mixer.music.load("assets/sounds/%s" %(music))
             pygame.mixer.music.play(loops=-1) 
@@ -211,6 +211,11 @@ class Lvl:
                 elif line[0:5] == "markr":
                     dialog = line[7:-1]
                     initdial = 1
+                
+                #saut dans le fichier
+                elif line[0:6] == "towait":
+                    towait = str(line[8:-1])
+                    print(towait)
 
                 #appel de l'initialisation
                 elif line[0:5] == "init-":

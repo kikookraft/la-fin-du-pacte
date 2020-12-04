@@ -1,39 +1,64 @@
-init- (Zach.png; 650,225; 300,500; None; bg.jpg; lava.wav; True)
+init- (None; 650,225; 300,500; None; Bidonville.jpg; 02.  Musique libre de droits  La Grande Table - Delnica-1.wav; True)
 title (La Fin Du Pacte - Le Tutoriel)
-dialg (3; 300)
-Bienvenue dans ce test de niveaux !
-Tu vas beaucoup aimer (je pense) &é(-è_çà)=É
-Que veut tu faire en premier ?
-markr (1)
-choix (3; A - Attendre 5 sec; B - Parler; C - La réponse C; waitthe5sec; speeak; wasted)
-
-waitthe5sec
-init- (Zach.png,kevin.png; 650,225/0,250; 300,500/300,500; None; bg.jpg; lava.wav; True)
-temps (500)
-dialg (3; 300)
-Tu veux un trophé pour etre arrivé ici ?
-A moin que tu n'en veuille pas ...
-Bon je vais quand meme t'en donner un ...
-img-- (assets/trophes.png; 490,310; 100,100)
-sound (assets/sounds/AMBIANCE DE GROTTE - Bruitage Gratuit.mp3)
-temps (1000)
-end--
-
-speeak
-markr (2)
+dialg (5; 300)
+Bienvenue sur le jeux La Fin Du Pacte !!!
+Ce jeux est une histoire interactive ou chaque choix 
+à une incidence sur le futur !
+Appui sur espace quand tu vois le carré blanc 
+en haut à droite...
 dialg (2; 200)
-Donc tu veux parler ?
-Alors si c'est ce que tu veux, c'est partis!
-markr (3)
-dialg (3; 300)
-Quand j'était petit, ma grand mère m'aimait...
-Elle me faisait souvent des gâteaux...
-Mais elle et décédé du COVID-19...
-mort- (Toi aussi mdr ☺)
+Pour aller plus vite, appuis sur S pour passer
+des dialogues.
+markr (1)
+dialg (1; 200)
+Tu peut revenir au menu en pressant ECHAP
+dialg (2; 200)
+Pour les choix, tu dois faire le choix en appuyant
+sur les touches 1 2 3 ou ABC ou & é "
+dialg (2; 200)
+Quant un personnage possede une arme,
+cela sera affiché
+dialg (2; 200)
+Maintenant tu vas devoir choisir un personnage
+chaque personnage a une histoire différente !
+markr (2)
+init- (None; None; None; None; choix-perso.jpg; None; False)
+choix (3; A - Zach; B - Angela; Vérouillé !; zach; angela; wasted)
+
+zach
+init- (Zach.png; 650,225; 300,500; None; Bidonville.jpg; None; False)
+dialg (2; 100)
+Très bien tu as donc choisit Zach! 
+Esperons que tu ne regreteras pas ton choix !
+towait (next)
+ 
+angela
+init- (Angela.png; 550,350; 500,400; None; Bidonville.jpg; None; False)
+dialg (2; 100)
+Très bien tu as donc choisit Angela! 
+Esperons que tu ne regreteras pas ton choix !
+towait (next)
+ 
+wasted
+dialg (2; 0)
+Tu dois terminer le jeux au moin une fois 
+pour debloquer ce personnage ! 
+end--
+ 
+ 
+next
+dialg (1; 200)
+Ton choix, te convient-il ?
+choix (2; A - Oui; B - Non; yes; no)
+
+yes
+dialg (2; 100)
+Super !
+Alors c'est partis pour l'aventure !
 end--
 
-wasted
-markr (75)
-video (assets/movies/credit.mp4)
-mort- (Tu l'as mérité !)
+no
+dialg (2; 100)
+Tant pis tu fera avec...
+C'est partis pour l'aventure !
 end--
