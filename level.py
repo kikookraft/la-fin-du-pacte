@@ -138,49 +138,57 @@ class Lvl:
 
 
     def play(self, screen, level, dialog, name):
-
+        level = int(level)
+        dialog = int(dialog)
+        name = str(name)
         nvx = []
         skip = 0
         towait = "None"
         init = 0
         initdial = 0
         #recherche des fichiers du niveau
-        try:
-            if name == "Zach":
-                if level == 1:
-                    file = "nvx/nvx1.txt"
-                elif level == 2:
-                    file = "nvx/nvx2.txt"
-                elif level == 3:
-                    file = "nvx/nvx3.txt"
-                elif level == 4:
-                    file = "nvx/nvx4.txt"
-            elif name == "Angela":
-                if level == 1:
-                    file = "nvx/nvx1A.txt"
-                elif level == 2:
-                    file = "nvx/nvx2A.txt"
-                elif level == 3:
-                    file = "nvx/nvx3A.txt"
-                elif level == 4:
-                    file = "nvx/nvx4A.txt"
-            elif name == "UtopiaJr":
-                if level == 1:
-                    file = "nvx/nvxU.txt"
-                elif level == 2:
-                    file = "nvx/nvxUU.txt"
-                elif level == 3:
-                    file = "nvx/nvxUUU.txt"
-                elif level == 4:
-                    file = "nvx/nvxX.txt"
-            else:
+        if name == "Zach":
+            print(level)
+            if level == 0:
+                print("coucou")
                 file = "nvx/tuto.txt"
-        except:
-            print("Il manque certain niveau !\nVeuiller verifier les fichiers du jeux !")
-            pygame.quit()
-            sys.quit()
+            elif level == 1:
+                file = "nvx/nvx1.txt"
+            elif level == 2:
+                file = "nvx/nvx2.txt"
+            elif level == 3:
+                file = "nvx/nvx3.txt"
+            elif level == 4:
+                file = "nvx/nvx4.txt"
+        elif name == "Angela":
+            if level == 0:
+                file = "nvx/tuto.txt"
+            elif level == 1:
+                file = "nvx/nvx1A.txt"
+            elif level == 2:
+                file = "nvx/nvx2A.txt"
+            elif level == 3:
+                file = "nvx/nvx3A.txt"
+            elif level == 4:
+                file = "nvx/nvx4A.txt"
+        elif name == "UtopiaJr":
+            if level == 0:
+                file = "nvx/tuto.txt"
+            elif level == 1:
+                file = "nvx/nvxU.txt"
+            elif level == 2:
+                file = "nvx/nvxUU.txt"
+            elif level == 3:
+                file = "nvx/nvxUUU.txt"
+            elif level == 4:
+                file = "nvx/nvxX.txt"
+        else:
+            file = "nvx/tuto.txt"
         #ouverture du fichier
-        f = open(str(file), 'r', encoding='utf-8')
+        try:
+            f = open(str(file), 'r', encoding='utf-8')
+        except FileNotFoundError:
+            raise FileNotFoundError(file,"Le fichier n'a pas été trouvé ",file,"File Not Found")
         line = f.readline().rstrip('\n')
         sound = None
         while line:
@@ -205,8 +213,16 @@ class Lvl:
                 
                 #niveau suivant
                 elif line[0:5] == "end++":
-                    return level+1, dialog, name
+                    try:
+                        sound.stop()
+                    except:
+                        pass
+                    return level+1, 0, name
                 
+                #recuperer choix du perso dans le tuto
+                elif file == "nvx/tuto.txt" and line[0:6] == "output":
+                    name = line[8:-1]
+
                 #dialogue suivant
                 elif line[0:5] == "markr":
                     dialog = line[7:-1]

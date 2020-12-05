@@ -26,6 +26,7 @@ init- (None; None; None; None; choix-perso.jpg; None; False)
 choix (3; A - Zach; B - Angela; Vérouillé !; zach; angela; wasted)
 
 zach
+output (Zach)
 init- (Zach.png; 650,225; 300,500; None; Bidonville.jpg; None; False)
 dialg (2; 100)
 Très bien tu as donc choisit Zach! 
@@ -33,6 +34,7 @@ Esperons que tu ne regreteras pas ton choix !
 towait (next)
  
 angela
+output (Angela)
 init- (Angela.png; 550,350; 500,400; None; Bidonville.jpg; None; False)
 dialg (2; 100)
 Très bien tu as donc choisit Angela! 
@@ -55,10 +57,10 @@ yes
 dialg (2; 100)
 Super !
 Alors c'est partis pour l'aventure !
-end--
+end++
 
 no
 dialg (2; 100)
 Tant pis tu fera avec...
 C'est partis pour l'aventure !
-end--
+end++
