@@ -308,6 +308,7 @@ class Lvl:
                         r = ""
                         x = 0
                         x2 = 0
+                        skip_dial = False
                         textesave = texte
                         text_width = 0
                         # systeme pour passer a la ligne le texte quand il est trop long
@@ -322,14 +323,12 @@ class Lvl:
                             x+=text.get_width()
                             screen.blit(text, (x2+30,y))
                             x2 = x
-                            tmp = self.wait(4)
+                            if skip_dial == False:
+                                tmp = self.wait(4)
                             if tmp == 1:
                                 return level, dialog, name
                             elif tmp == 0:
-                                text = font.render(str(texte), True, (255, 255, 255))
-                                screen.blit(text, (30,y))
-                                pygame.display.flip()
-                                break
+                                skip_dial = True
                             pygame.display.flip()
                         # for l in texte:
                         #     r = r + l
