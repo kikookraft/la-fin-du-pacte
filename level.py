@@ -1,19 +1,14 @@
-#importation des niveaux sous la forme : dossier.nom_du_niveau
 import pygame
 import os
-from moviepy.editor import *
+#from moviepy.editor import *
 from score import Score
 import sys
-class Lvl:
-
-    screen = pygame.display.set_mode((1080, 720))
-
-    # def __init__(self):
-    #     #comme pour le fichier game mais pour les niveaux
-    #     #self.test = Test()
-    #     print("Chargé !")
-
-
+class Lvl:   
+    screen = pygame.display.set_mode((1080,720))
+    info = pygame.display.Info()
+    width = info.current_w
+    height = info.current_h
+    
     def initialisation(self, screen, imgperso=("perso1.png"), posperso=((0,0)), scaleperso=((500,500)), weapon=("None"), background="None.jpg", music="None.wav", statemusic=False):
         '''Permet d'initialiser l'écran!\n
         `screen` = ecran,\n 
@@ -26,7 +21,7 @@ class Lvl:
         `statemusic` = activer ou pas la musique'''
         background1 = str("assets/bg/"+background)
         bgd = pygame.image.load(background1)
-        bgd = pygame.transform.scale(bgd,(1080,720))
+        bgd = pygame.transform.scale(bgd, (self.width,self.height))
         screen.blit(bgd, bgd.get_rect())
         #personnage
         if imgperso != "None":
@@ -47,7 +42,7 @@ class Lvl:
             pygame.mixer.music.stop()
             pygame.mixer.music.load("assets/sounds/%s" %(music))
             pygame.mixer.music.play(loops=-1) 
-            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.set_volume(0.3)
     
     def mort(self, screen, raison):
         pygame.mixer.music.stop()
@@ -57,7 +52,7 @@ class Lvl:
         screen.blit(background,(0,0))
         #afficher raison de mort
         button_text = font.render(raison, True, (255, 25, 25))
-        text_rect = button_text.get_rect(center=(540, 360+150))
+        text_rect = button_text.get_rect(center=(self.width/2, self.height/2+150))
         screen.blit(button_text,text_rect)
         pygame.display.flip()
         tmp = self.wait(500)
@@ -71,13 +66,15 @@ class Lvl:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         return 1
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
                         return 1
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_s :
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_s :
+                        return 0
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
                         return 0
             except:
                 pass
-    
+                        
     def choice(self, screen, line): #fonction pour generer des choix
         data_choice = line[7:-1]
         show_choice = tuple(data_choice.split('; '))
@@ -95,7 +92,7 @@ class Lvl:
             pygame.display.flip()
             if i < 3:
                 for tt in range(3):
-                    pygame.draw.rect(screen, (100, 5, 5), (tt*1080/3+10, 610, 340, 100))
+                    pygame.draw.rect(screen, (100, 5, 5), (tt*self.width/3+10, self.height-110, self.width/3-20, 100))
                     if tt == 0:
                         TEXT=choix1
                     if tt == 1 and nbchoix == 3:
@@ -107,32 +104,32 @@ class Lvl:
                     if tt == 2 and nbchoix == 2:
                         TEXT=choix2
                     button_text = font.render(TEXT, True, (255, 255, 255))
-                    screen.blit(button_text, (tt*1080/3+20, 620))
+                    screen.blit(button_text, (tt*self.width/3+20, self.height-100))
                     i+=1
 
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.quit:
                     return 0
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.KEYDOWN and event.key == pygame.K_a or event.type == pygame.KEYDOWN and event.key == pygame.K_1 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_1:
-                    pygame.draw.rect(screen, (255,255,255), (8, 608, 344, 104), 6)
-                    pygame.draw.rect(screen, (0,0,0), (7, 607, 345, 105), 2)
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.KEYDOWN and event.key == pygame.K_a or event.type == pygame.KEYDOWN and event.key == pygame.K_1 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_1 \
+                    or event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 0*self.width/3+10 and pygame.mouse.get_pos()[0] < (0*self.width/3+10)+self.width/3-20 and pygame.mouse.get_pos()[1] > self.height-110 and pygame.mouse.get_pos()[1] < self.height-10:
+                    pygame.draw.rect(screen, (255,255,255), (0*self.width/3+8, self.height-113, self.width/3-16, 106), 6)
                     choice = False
                     return 1
                 if nbchoix == 2:
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_b or event.type == pygame.KEYDOWN and event.key == pygame.K_2 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_2:
-                        pygame.draw.rect(screen, (255,255,255), (728, 608, 344, 104), 6)
-                        pygame.draw.rect(screen, (0,0,0), (727, 607, 345, 105), 2)
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_b or event.type == pygame.KEYDOWN and event.key == pygame.K_2 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_2 \
+                        or event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 2*self.width/3+10 and pygame.mouse.get_pos()[0] < (2*self.width/3+10)+self.width/3-20 and pygame.mouse.get_pos()[1] > self.height-110 and pygame.mouse.get_pos()[1] < self.height-10:
+                        pygame.draw.rect(screen, (255,255,255), (2*self.width/3+8, self.height-113, self.width/3-16, 106), 6)
                         choice = False
                         return 2
                 if nbchoix == 3:
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_b or event.type == pygame.KEYDOWN and event.key == pygame.K_2 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_2:
-                        pygame.draw.rect(screen, (255,255,255), (368, 608, 344, 104), 6)
-                        pygame.draw.rect(screen, (0,0,0), (367, 607, 345, 105), 2)
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_b or event.type == pygame.KEYDOWN and event.key == pygame.K_2 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_2 \
+                        or event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 1*self.width/3+10 and pygame.mouse.get_pos()[0] < (1*self.width/3+10)+self.width/3-20 and pygame.mouse.get_pos()[1] > self.height-110 and pygame.mouse.get_pos()[1] < self.height-10:
+                        pygame.draw.rect(screen, (255,255,255), (1*self.width/3+8, self.height-113, self.width/3-16, 106), 6)
                         choice = False
                         return 2
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_c or event.type == pygame.KEYDOWN and event.key == pygame.K_3 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_3:
-                        pygame.draw.rect(screen, (255,255,255), (728, 608, 344, 104), 6)
-                        pygame.draw.rect(screen, (0,0,0), (727, 607, 345, 105), 2)
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_c or event.type == pygame.KEYDOWN and event.key == pygame.K_3 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_3 \
+                        or event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 2*self.width/3+10 and pygame.mouse.get_pos()[0] < (2*self.width/3+10)+self.width/3-20 and pygame.mouse.get_pos()[1] > self.height-110 and pygame.mouse.get_pos()[1] < self.height-10:
+                        pygame.draw.rect(screen, (255,255,255), (2*self.width/3+8, self.height-113, self.width/3-16, 106), 6)
                         choice = False
                         return 3
 
@@ -148,9 +145,7 @@ class Lvl:
         initdial = 0
         #recherche des fichiers du niveau
         if name == "Zach":
-            print(level)
             if level == 0:
-                print("coucou")
                 file = "nvx/tuto.txt"
             elif level == 1:
                 file = "nvx/nvx1.txt"
@@ -184,6 +179,7 @@ class Lvl:
                 file = "nvx/nvxX.txt"
         else:
             file = "nvx/tuto.txt"
+            
         #ouverture du fichier
         try:
             f = open(str(file), 'r', encoding='utf-8')
@@ -231,7 +227,6 @@ class Lvl:
                 #saut dans le fichier
                 elif line[0:6] == "towait":
                     towait = str(line[8:-1])
-                    print(towait)
 
                 #appel de l'initialisation
                 elif line[0:5] == "init-":
@@ -252,6 +247,7 @@ class Lvl:
                 #jouer un son
                 elif line[0:5] == "sound":
                     sound = pygame.mixer.Sound(line[7:-1])
+                    sound.set_volume(0.5)
                     sound.play()
 
                 #mettre un titre
@@ -273,38 +269,58 @@ class Lvl:
                     return level, 0, name
                 
                 #vidéo
-                elif line[0:5] == "video":
-                    try:
-                        sound.stop()
-                    except:
-                        pass
-                    video = str(line[7:-1])
-                    clip = VideoFileClip(video).resize((1080,720))
-                    clip.preview(fps=30)
-                    
-                #generation des dialogues
+                # elif line[0:5] == "video":
+                #    try:
+                #        sound.stop()
+                #    except:
+                #        pass
+                #    video = str(line[7:-1])
+                #    clip = VideoFileClip(video).resize((1080,720))
+                #    clip.preview(fps=30)
+
                 elif line[0:5] == "dialg":
                     self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False)
                     font = pygame.font.SysFont('Helvetica', 40, bold=True)
                     scen = 1
                     y = 21
                     nb = 0
+                    number = 0
+                    remaindialog = True
+                    texte_remain = "None"
                     data_text = line[7:-1]
-                    showed_text = tuple(data_text.split('; '))
-                    for number in range(int(showed_text[0])):
-                        fnd = pygame.Surface((1040, 48))
+                    dialog_data = list(data_text.split('; '))
+                    while remaindialog:
+                        if texte_remain != "None":
+                            texte = texte_remain
+                            texte_remain = "None"
+                        elif number+1 <= int(dialog_data[0]):
+                            texte = f.readline().rstrip('\n')
+                            number+=1
+                        else:
+                            remaindialog = False
+                            break
+                        fnd = pygame.Surface((self.width-40, 48))
                         fnd.set_alpha(200)  
                         fnd.fill((100, 5, 5))
-                        screen.blit(fnd, (20, y))
-                        texte = f.readline().rstrip('\n')
+                        screen.blit(fnd, (20, y)) 
                         r = ""
+                        textesave = texte
                         text_width = 0
+                        print(texte)
+                        # systeme pour passer a la ligne le texte quand il est trop long
+                        if font.render(str(texte), True, (255,255,255)).get_width() > self.width-60:
+                            while font.render(str(texte), True, (255,255,255)).get_width() > self.width-60:
+                                texte = texte[:-1]
+                            while texte[len(texte)-1] != " ": #voir ou est l'espace précédent pour eviter de couper des mots
+                                texte = texte[:-1]
+                            texte_remain = textesave[len(texte):]
+                        print(texte_remain)
                         for l in texte:
                             r = r + l
                             text = font.render(str(r), True, (255, 255, 255))
-                            text_width = text.get_width()
+                            #text_width = text.get_width()
                             screen.blit(text, (30,y))
-                            tmp = self.wait(5)
+                            tmp = self.wait(4)
                             if tmp == 1:
                                 return level, dialog, name
                             elif tmp == 0:
@@ -315,22 +331,105 @@ class Lvl:
                             pygame.display.flip()
                         y += 48
                         pygame.display.flip()
-                        tmp = self.wait(showed_text[1])
+                        tmp = self.wait(dialog_data[1])
                         if tmp == 1:
                             return level, dialog, name
                     fnd = pygame.Surface((20, 20))
                     fnd.set_alpha(255)  
                     fnd.fill((255,255,255))
-                    screen.blit(fnd, (1060, 0))
+                    screen.blit(fnd, (self.width-20, 0))
                     pygame.display.flip()
                     while nb == 0:
                         for event in pygame.event.get():
-                            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.KEYDOWN : #and event.key == pygame.K_s
+                            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN: #and event.key == pygame.K_s
                                 nb = 1
-                                if showed_text[-1] == "True":
+                                if dialog_data[-1] == "True":
                                     self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False)
-                            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
+                            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
                                 return level, dialog, name
+  
+
+                    
+                #generation des dialogues
+                # elif line[0:5] == "dialg":
+                #     self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False)
+                #     font = pygame.font.SysFont('Helvetica', 40, bold=True)
+                #     scen = 1
+                #     y = 21
+                #     nb = 0
+                #     number = 0
+                #     textpass = False
+                #     texte_remain = "None"
+                #     data_text = line[7:-1]
+                #     showed_text_ = list(data_text.split('; '))
+                #     if int(showed_text_[0]) == 1:
+                #         showed_text = showed_text_
+                #         showed_text[0] = 2
+                #         textpass = True
+                #     else:
+                #         showed_text = showed_text_
+                #     while number < int(showed_text[0]):
+                #         print("---",showed_text[0], number)
+                #         fnd = pygame.Surface((self.width-40, 48))
+                #         fnd.set_alpha(200)  
+                #         fnd.fill((100, 5, 5))
+                #         screen.blit(fnd, (20, y))
+                #         if texte_remain != "None":
+                #             texte = texte_remain
+                #             texte_remain = "None"
+                #         elif textpass == False:
+                #             texte = f.readline().rstrip('\n')
+                #         else:
+                #             textpass = False
+                #             break
+                #         r = ""
+                #         textesave = texte
+                #         text_width = 0
+
+                #         print(texte)
+                #         # systeme pour passer a la ligne le texte quand il est trop long
+                #         if font.render(str(texte), True, (255,255,255)).get_width() > self.width-60:
+                #             while font.render(str(texte), True, (255,255,255)).get_width() > self.width-60:
+                #                 texte = texte[:-1]
+                #             while texte[len(texte)-1] != " ": #voir ou est l'espace précédent pour eviter de couper des mots
+                #                 texte = texte[:-1]
+                #             texte_remain = textesave[len(texte):]
+                #             number-=1
+                #         print(texte_remain)
+
+                #         for l in texte:
+                #             r = r + l
+                #             text = font.render(str(r), True, (255, 255, 255))
+                #             text_width = text.get_width()
+                #             screen.blit(text, (30,y))
+                #             tmp = self.wait(5)
+                #             if tmp == 1:
+                #                 return level, dialog, name
+                #             elif tmp == 0:
+                #                 text = font.render(str(texte), True, (255, 255, 255))
+                #                 screen.blit(text, (30,y))
+                #                 pygame.display.flip()
+                #                 break
+                #             pygame.display.flip()
+                #         y += 48
+                #         pygame.display.flip()
+                #         tmp = self.wait(showed_text[1])
+                #         if tmp == 1:
+                #             return level, dialog, name
+                #         number+=1
+                #     fnd = pygame.Surface((20, 20))
+                #     fnd.set_alpha(255)  
+                #     fnd.fill((255,255,255))
+                #     screen.blit(fnd, (self.width-20, 0))
+                #     pygame.display.flip()
+                #     while nb == 0:
+                #         for event in pygame.event.get():
+                #             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN: #and event.key == pygame.K_s
+                #                 nb = 1
+                #                 if showed_text[-1] == "True":
+                #                     self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False)
+                #             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
+                #                 return level, dialog, name
 
                 #generation des choix
                 elif line[0:5] == "choix":
