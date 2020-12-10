@@ -25,8 +25,8 @@ FPS = 100
 pygame.display.set_caption("La fin du pacte - Menu")
 screen = pygame.display.set_mode((1080, 720))
 info = pygame.display.Info()
-width = 1080
-height = 720
+width = info.current_w
+height = info.current_h
 width_box = 320
 height_box = 75
 nbbtn = 3
@@ -77,7 +77,9 @@ ymin = (info.current_h - dimension_fondy) / 2
 xmax = info.current_w - xmin
 ymax = info.current_h - ymin
 position_fond = (xmin, ymin)
- 
+
+#pour l'ecran ractile
+touched = False
 #----------------------------------------------------------------------------------------------
 #BOUCLE DU JEUX
 
@@ -90,94 +92,61 @@ while men:
  
     #faire bouger le titre au debut
     if logovar == 1:
-        ypos2 = ypos2 - 1
+        ypos2 = ypos2 - 3
         if ypos2 < 40:
             logovar = 0 
  
     #faire bouger le fond
     if ingame == 0:
         if not ypos > 0 and HT == True :
-            ypos = ypos + 1
+            ypos = ypos + 3
         if ypos > 0 :
             HT = False
         if not ypos < -1640 and HT==False:
-            ypos = ypos - 1
-        if ypos < -1640 :
+            ypos = ypos - 3
+        if ypos < -width-200 :
             HT = True
  
     #quitter la fenetre et detection de touches
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             men = False
-            game.score.save(level, dialog, name , 1)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
             men = False
             game.score.save(level, dialog, name , 1)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_r :
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_r :
             game.new.new()
             level = 0
             dialog = 0
             name = 'None'
- 
-        #if event.type == pygame.MOUSEMOTION:  # Si mouvement de souris     #    a garder au cas ou...
-            # On affiche les coordonés
-            #perso_x = event.pos[0]
-            #perso_y = event.pos[1]
-            #print(event.pos[0], event.pos[1])
+            game.score.save(level, dialog, name , 1)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            touched = True
+            zone = pygame.mouse.get_pos()
+        elif event.type == pygame.MOUSEBUTTONUP:
+            touched = False
  
     if ingame == 0:
         #detection bouton
-        if event.type == pygame.MOUSEBUTTONDOWN: 
-            if event.pos[0] < mnumove + 698 and event.pos[0] > mnumove + 382 and event.pos[1] < 360 and event.pos[1] > 280:
-                if cooldown == 0:
-                    play = 1
+        if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 0 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 0 + height_box and touched == True:
+            if cooldown == 0:
+                play = 1
                 cooldown = 2
+        if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 1 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 1 + height_box and touched == True:
+            game.clear(screen)
+            pygame.time.wait(1000)
 
-                    
-                    
-        if event.type == pygame.MOUSEBUTTONDOWN and event.pos[0] < mnumove + 698 and event.pos[0] > mnumove + 382 and event.pos[1] < 510 and event.pos[1] > 430:
+  
+        if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 2 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 2 + height_box and touched == True:
+            game.score.save(level, dialog, name, 1)
 
-                if credit == 0:
-                    credit = 1
-   
-                    game.clear(screen)
-                    game.score.save(level, dialog,name , 0)
-                    pygame.time.wait(1000)
-                    pygame.display.set_caption("La fin du pacte - Credits")
-                    pygame.mixer.music.stop()
-                    game.credit.video("assets/movies/credit.mp4")
-                    game.clear(screen)
-                    pygame.mixer.music.load("assets/sounds/City Space - kikookraft.wav")
-                    pygame.mixer.music.set_volume(0.25)
-                    pygame.mixer.music.play(loops=50, start=0.0)
-                   
-                   
-                   
-        if event.type == pygame.MOUSEBUTTONDOWN and event.pos[0] < mnumove + 698 and event.pos[0] > mnumove + 382 and event.pos[1] < 660 and event.pos[1] > 585:
-                game.score.save(level, dialog, name, 1)
-
-
-            #Changer le type de curseur quand on passe sur les boutons
-        try:        
-            if event.pos[0] < mnumove + 698 and event.pos[0] > mnumove + 382 and event.pos[1] < 660 and event.pos[1] > 585:
-                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-            elif event.pos[0] < mnumove + 698 and event.pos[0] > mnumove + 382 and event.pos[1] < 510 and event.pos[1] > 430 and credit == 0:
-                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-            elif event.pos[0] < mnumove + 698 and event.pos[0] > mnumove + 382 and event.pos[1] < 360 and event.pos[1] > 280:        
-                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-            else:
-                pygame.mouse.set_cursor(*pygame.cursors.arrow)
-        except:
-            pygame.mouse.set_cursor(*pygame.cursors.arrow)
  
     if not cooldown == 0:
         cooldown -= 1
 
-
     if play == 1:
         play = 0
         pygame.mouse.set_cursor(*pygame.cursors.arrow)
-        pygame.mouse.set_visible(False) 
         pygame.display.set_caption("La fin du pacte - JEUX")
         ingame = 1
         game.clear(screen)
@@ -192,13 +161,14 @@ while men:
             dialog = 0
             name = 0
         game.score.save(level,dialog,name)
-        pygame.mouse.set_visible(True)
         pygame.event.clear()
         game.clear(screen)
+        pygame.display.set_caption("La fin du pacte")
         ingame = 0
         pygame.mixer.music.load("assets/sounds/City Space - kikookraft.wav")
         pygame.mixer.music.set_volume(0.2)
         pygame.mixer.music.play(loops=50, start=0.0) 
+        touched = False
 
     if ingame == 0:
         #menu
@@ -236,13 +206,13 @@ while men:
            
  
             if stmn == 1:
-                mnumove = mnumove + 5
+                mnumove = mnumove + 10
                 if mnumove == 0:
                     stmn = 0
 
     
     # mise a jour de l'ecran
-    pygame.display.flip()
     clock.tick(FPS)
+    pygame.display.flip()
 
 
