@@ -33,6 +33,9 @@ Bienvenu sur le repos de **La Fin Du Pacte** !!
         - Pygame
     - Ouvrir le fichier `main.py` avec l'application puis lancer le jeux
 
+    > Attention ! Ne retournez pas le téléphone en pleine partie, cela fait crash le jeu !   
+    > Penser a retourner votre téléphone avant.
+
 ---
 
 ## Les touches et actions
@@ -93,6 +96,7 @@ Regarde dans les fichiers par toi-meme, tu verras.
 
     initialisation du menu avec 7 arguments (chaque arguments est séparé par un point virgule et un espace `; `):   
     -   1 er argument : Chemin des images des personnages (Zach.png,kevin.png;). sépare les personnages par des virgules   
+    Il est possible d'afficher le personnage choisit au debut par le joueur, pour cela il suffit d'écrire `perso`.   
     -   2eme : position des personnages. chaque personnage possède un groupe des 2 nombre séparé par des virgules et les groupes sont séparés par des slash `/`   
     -   3eme : taille des images des personnages, fonctionne comme pour la position   
     -   4eme : Arme du personnage (ne fonctionne pas pour l'instant) pour afficher une arme, faire afficher l'arme comme pour un personnage.   

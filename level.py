@@ -9,7 +9,7 @@ class Lvl:
     width = info.current_w
     height = info.current_h
     
-    def initialisation(self, screen, imgperso=("perso1.png"), posperso=((0,0)), scaleperso=((500,500)), weapon=("None"), background="None.jpg", music="None.wav", statemusic=False):
+    def initialisation(self, screen, imgperso=("perso1.png"), posperso=((0,0)), scaleperso=((500,500)), weapon=("None"), background="None.jpg", music="None.wav", statemusic=False, name="None"):
         '''Permet d'initialiser l'écran!\n
         `screen` = ecran,\n 
         `imgperso` = images de chaque personnages,\n 
@@ -25,6 +25,8 @@ class Lvl:
         screen.blit(bgd, bgd.get_rect())
         #personnage
         if imgperso != "None":
+            if imgperso == "perso":
+                imgperso =  str(name+".png")
             #mise en forme des variable (les mettre dans les bon format)
             imgperso = imgperso.split(',')
             posperso = posperso.split('/')
@@ -232,7 +234,7 @@ class Lvl:
                 elif line[0:5] == "init-":
                     varinit = tuple(str(line[7:-1]).split('; '))
                     # 0, 1 et 2 sont des tuples
-                    self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], varinit[6])
+                    self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], varinit[6], name)
                     init+=1
 
                 #afficher des images
@@ -279,7 +281,7 @@ class Lvl:
                 #    clip.preview(fps=30)
 
                 elif line[0:5] == "dialg":
-                    self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False)
+                    self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False, name)
                     font = pygame.font.SysFont('Helvetica', 40, bold=True)
                     scen = 1
                     y = 21
@@ -304,6 +306,8 @@ class Lvl:
                         fnd.fill((100, 5, 5))
                         screen.blit(fnd, (20, y)) 
                         r = ""
+                        x = 0
+                        x2 = 0
                         textesave = texte
                         text_width = 0
                         # systeme pour passer a la ligne le texte quand il est trop long
@@ -313,11 +317,11 @@ class Lvl:
                             while texte[len(texte)-1] != " ": #voir ou est l'espace précédent pour eviter de couper des mots
                                 texte = texte[:-1]
                             texte_remain = textesave[len(texte):]
-                        for l in texte:
-                            r = r + l
-                            text = font.render(str(r), True, (255, 255, 255))
-                            #text_width = text.get_width()
-                            screen.blit(text, (30,y))
+                        for l in texte: #morceau de code pour afficher les lettres une par une
+                            text = font.render(str(l), True, (255, 255, 255)) 
+                            x+=text.get_width()
+                            screen.blit(text, (x2+30,y))
+                            x2 = x
                             tmp = self.wait(4)
                             if tmp == 1:
                                 return level, dialog, name
@@ -327,6 +331,20 @@ class Lvl:
                                 pygame.display.flip()
                                 break
                             pygame.display.flip()
+                        # for l in texte:
+                        #     r = r + l
+                        #     text = font.render(str(r), True, (255, 255, 255))
+                        #     #text_width = text.get_width()
+                        #     screen.blit(text, (30,y))
+                        #     tmp = self.wait(4)
+                        #     if tmp == 1:
+                        #         return level, dialog, name
+                        #     elif tmp == 0:
+                        #         text = font.render(str(texte), True, (255, 255, 255))
+                        #         screen.blit(text, (30,y))
+                        #         pygame.display.flip()
+                        #         break
+                        #     pygame.display.flip()
                         y += 48
                         pygame.display.flip()
                         tmp = self.wait(dialog_data[1])
@@ -342,7 +360,7 @@ class Lvl:
                             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN: #and event.key == pygame.K_s
                                 nb = 1
                                 if dialog_data[-1] == "True":
-                                    self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False)
+                                    self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False, name)
                             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
                                 return level, dialog, name
 

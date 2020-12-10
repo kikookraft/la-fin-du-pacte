@@ -1,64 +1,106 @@
+import sys
 import pygame
-pygame.init()
 
-screen = pygame.display.set_mode((1080, 720))
-screen.fill((50,50,50))
-info = pygame.display.Info()
-width = info.current_w
-height = info.current_h
+import overlay
+from picture import Picture, View
+from user_state import User
 
-choix1 = "Choix numéro 1"
-choix2 = "Choix numéro 2"
-choix3 = "Choix numéro 3"
+class Manager(object):
 
-nbchoix = 3
+    def __init__(self):
 
-while True:    
-    font = pygame.font.SysFont('Helvetica', 22, bold=True)
-    choice = True
-    i = 0
-    while choice:
+        self.background_color = (0,0,0)
+        self.resize_window((800,600))
+        self.picture = Picture()
+        self.view = View(self.picture)
+
+        self.user = User()
+
+        self.active_overlay = None
+        self.test_overlay = overlay.Overlay(self.user)
+        self.color_picker_overlay = overlay.ColorPickerOverlay(self.user)
+        self.custom_palette_overlay = overlay.CustomPaletteOverlay(self.user)
+
+    def get_active_color(self):
+        return self.user.active_color
+
+    def get_active_tool(self):
+        return self.user.active_tool
+
+    def resize_window(self, size):
+
+        self.window=pygame.display.set_mode(size,pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.RESIZABLE)
+        self.window.fill(self.background_color)
         pygame.display.flip()
-        if i < 3:
-            for tt in range(3):
-                pygame.draw.rect(screen, (100, 5, 5), (tt*width/3+10, height-110, width/3-20, 100))
-                if tt == 0:
-                    TEXT=choix1
-                if tt == 1 and nbchoix == 3:
-                    TEXT=choix2
-                if tt == 1 and nbchoix == 2:
-                    TEXT=""
-                if tt == 2 and nbchoix == 3:
-                    TEXT=choix3
-                if tt == 2 and nbchoix == 2:
-                    TEXT=choix2
-                button_text = font.render(TEXT, True, (255, 255, 255))
-                screen.blit(button_text, (tt*width/3+20, height-100))
-                i+=1
+
+    def draw(self):
+
+        #clear the screen
+        self.window.fill(self.background_color)
+
+        #draw the picture
+        if self.view:
+            win_size = self.window.get_size()
+            pic_surf = self.view.draw(win_size)
+
+            self.window.blit(pic_surf, (0,0))
+
+        #draw the active overlay
+        if self.active_overlay:
+            ovr_surf = self.active_overlay.draw(self.window.get_size())
+            self.window.blit(ovr_surf, (0,0))
+
+        #update the screen
+        pygame.display.flip()
+
+    def handle_input(self):
+
+        #mouse.get_rel must only be called once a step, don't call elsewhere
+        #(because it's relative to the last call)
+        mouse_delta = pygame.mouse.get_rel()
+        mouse_pos = pygame.mouse.get_pos()
+
+        mouse_pressed = pygame.mouse.get_pressed()
+        mouse_left_pressed, mouse_mid_pressed, mouse_right_pressed = mouse_pressed
+
+        mod_pressed = pygame.key.get_mods()
+        shift_pressed = mod_pressed & pygame.KMOD_SHIFT
+        ctrl_pressed = mod_pressed & pygame.KMOD_CTRL
+        alt_pressed = mod_pressed & pygame.KMOD_ALT
+
+        self.active_overlay = None
+
+        if ctrl_pressed:
+            self.active_overlay = self.test_overlay
+        if pygame.key.get_pressed()[pygame.K_q]:
+            self.active_overlay = self.color_picker_overlay
+        if pygame.key.get_pressed()[pygame.K_q] and shift_pressed:
+            self.active_overlay = self.custom_palette_overlay
+
+
+        if self.active_overlay:
+            if mouse_left_pressed:
+                mx,my = mouse_pos
+                self.active_overlay.left_click(mx,my)
+            if mouse_right_pressed:
+                mx,my = mouse_pos
+                self.active_overlay.right_click(mx,my)
+        else:
+            #drawing mode
+            if mouse_left_pressed:
+                layer = self.picture.layers[0]
+                color = self.get_active_color()
+                mousepos = self.view.position_screen_to_picture(pygame.mouse.get_pos())
+                self.get_active_tool().draw(layer, color, mousepos, 
+                            ctrl_pressed, shift_pressed, alt_pressed)
+
+            if mouse_right_pressed:
+                self.view.set_panning_relative(mouse_delta)
 
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.quit:
-                pygame.quit()
-                quit()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.KEYDOWN and event.key == pygame.K_a or event.type == pygame.KEYDOWN and event.key == pygame.K_1 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_1 \
-                or event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 0*width/3+10 and pygame.mouse.get_pos()[0] < (0*width/3+10)+width/3-20 and pygame.mouse.get_pos()[1] > height-110 and pygame.mouse.get_pos()[1] < height-10:
-                pygame.draw.rect(screen, (255,255,255), (0*width/3+8, height-113, width/3-16, 106), 6)
-                choice = False
-                break
-            if nbchoix == 2:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_b or event.type == pygame.KEYDOWN and event.key == pygame.K_2 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_2 \
-                    or event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 2*width/3+10 and pygame.mouse.get_pos()[0] < (2*width/3+10)+width/3-20 and pygame.mouse.get_pos()[1] > height-110 and pygame.mouse.get_pos()[1] < height-10:
-                    pygame.draw.rect(screen, (255,255,255), (2*width/3+8, height-113, width/3-16, 106), 6)
-                    choice = False
-                    break
-            if nbchoix == 3:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_b or event.type == pygame.KEYDOWN and event.key == pygame.K_2 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_2 \
-                    or event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 1*width/3+10 and pygame.mouse.get_pos()[0] < (1*width/3+10)+width/3-20 and pygame.mouse.get_pos()[1] > height-110 and pygame.mouse.get_pos()[1] < height-10:
-                    pygame.draw.rect(screen, (255,255,255), (1*width/3+8, height-113, width/3-16, 106), 6)
-                    choice = False
-                    break
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_c or event.type == pygame.KEYDOWN and event.key == pygame.K_3 or event.type == pygame.KEYDOWN and event.key == pygame.K_KP_3 \
-                    or event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 2*width/3+10 and pygame.mouse.get_pos()[0] < (2*width/3+10)+width/3-20 and pygame.mouse.get_pos()[1] > height-110 and pygame.mouse.get_pos()[1] < height-10:
-                    pygame.draw.rect(screen, (255,255,255), (2*width/3+8, height-113, width/3-16, 106), 6)
-                    choice = False
-                    break
+            #SYSTEM EVENTS
+            if event.type == pygame.QUIT:
+                sys.exit(0)
+
+            elif event.type == pygame.VIDEORESIZE:
+                self.resize_window(event.dict['size'])
