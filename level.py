@@ -306,7 +306,6 @@ class Lvl:
                         r = ""
                         textesave = texte
                         text_width = 0
-                        print(texte)
                         # systeme pour passer a la ligne le texte quand il est trop long
                         if font.render(str(texte), True, (255,255,255)).get_width() > self.width-60:
                             while font.render(str(texte), True, (255,255,255)).get_width() > self.width-60:
@@ -314,7 +313,6 @@ class Lvl:
                             while texte[len(texte)-1] != " ": #voir ou est l'espace précédent pour eviter de couper des mots
                                 texte = texte[:-1]
                             texte_remain = textesave[len(texte):]
-                        print(texte_remain)
                         for l in texte:
                             r = r + l
                             text = font.render(str(r), True, (255, 255, 255))
@@ -347,89 +345,6 @@ class Lvl:
                                     self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False)
                             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
                                 return level, dialog, name
-  
-
-                    
-                #generation des dialogues
-                # elif line[0:5] == "dialg":
-                #     self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False)
-                #     font = pygame.font.SysFont('Helvetica', 40, bold=True)
-                #     scen = 1
-                #     y = 21
-                #     nb = 0
-                #     number = 0
-                #     textpass = False
-                #     texte_remain = "None"
-                #     data_text = line[7:-1]
-                #     showed_text_ = list(data_text.split('; '))
-                #     if int(showed_text_[0]) == 1:
-                #         showed_text = showed_text_
-                #         showed_text[0] = 2
-                #         textpass = True
-                #     else:
-                #         showed_text = showed_text_
-                #     while number < int(showed_text[0]):
-                #         print("---",showed_text[0], number)
-                #         fnd = pygame.Surface((self.width-40, 48))
-                #         fnd.set_alpha(200)  
-                #         fnd.fill((100, 5, 5))
-                #         screen.blit(fnd, (20, y))
-                #         if texte_remain != "None":
-                #             texte = texte_remain
-                #             texte_remain = "None"
-                #         elif textpass == False:
-                #             texte = f.readline().rstrip('\n')
-                #         else:
-                #             textpass = False
-                #             break
-                #         r = ""
-                #         textesave = texte
-                #         text_width = 0
-
-                #         print(texte)
-                #         # systeme pour passer a la ligne le texte quand il est trop long
-                #         if font.render(str(texte), True, (255,255,255)).get_width() > self.width-60:
-                #             while font.render(str(texte), True, (255,255,255)).get_width() > self.width-60:
-                #                 texte = texte[:-1]
-                #             while texte[len(texte)-1] != " ": #voir ou est l'espace précédent pour eviter de couper des mots
-                #                 texte = texte[:-1]
-                #             texte_remain = textesave[len(texte):]
-                #             number-=1
-                #         print(texte_remain)
-
-                #         for l in texte:
-                #             r = r + l
-                #             text = font.render(str(r), True, (255, 255, 255))
-                #             text_width = text.get_width()
-                #             screen.blit(text, (30,y))
-                #             tmp = self.wait(5)
-                #             if tmp == 1:
-                #                 return level, dialog, name
-                #             elif tmp == 0:
-                #                 text = font.render(str(texte), True, (255, 255, 255))
-                #                 screen.blit(text, (30,y))
-                #                 pygame.display.flip()
-                #                 break
-                #             pygame.display.flip()
-                #         y += 48
-                #         pygame.display.flip()
-                #         tmp = self.wait(showed_text[1])
-                #         if tmp == 1:
-                #             return level, dialog, name
-                #         number+=1
-                #     fnd = pygame.Surface((20, 20))
-                #     fnd.set_alpha(255)  
-                #     fnd.fill((255,255,255))
-                #     screen.blit(fnd, (self.width-20, 0))
-                #     pygame.display.flip()
-                #     while nb == 0:
-                #         for event in pygame.event.get():
-                #             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN: #and event.key == pygame.K_s
-                #                 nb = 1
-                #                 if showed_text[-1] == "True":
-                #                     self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False)
-                #             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
-                #                 return level, dialog, name
 
                 #generation des choix
                 elif line[0:5] == "choix":

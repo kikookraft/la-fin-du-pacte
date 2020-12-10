@@ -4,7 +4,6 @@ from game import Game
 from level import Lvl
 from score import Score
 import os
-from PIL import Image
 pygame.init()
 level = 0
 dialog = 0
