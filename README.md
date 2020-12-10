@@ -21,7 +21,7 @@ Bienvenu sur le repos de **La Fin Du Pacte** !!
     - Installer [Python](https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe)
     - [Télécharger](https://github.com/kikookraft/la-fin-du-pacte/archive/main.zip) La Fin Du Pacte
     - Ouvrir un terminal dans le dossier `la-fin-du-pacte-main`   
-    en faisant `SHIFT + Click droit  >>  Ouvrir la fenetre powershell ici`)
+    en faisant `SHIFT + Click droit  >>  Ouvrir la fenetre powershell ici`
     - Installer les modules necéssaires comme sur linux (voir ci-dessus)
     - Lancer le jeux (comme sur linux)
 - ## Pour démarrer le jeux sur android :
