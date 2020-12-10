@@ -4,7 +4,7 @@ Une histoire interactive créée en python...
 
 Bienvenu sur le repos de **La Fin Du Pacte** !!
 
-### [Télécharger le jeux](https://github.com/kikookraft/la-fin-du-pacte/archive/main.zip) (l'archive fait 350Mo, peut prendre du temps a télécharger)
+### [Télécharger le jeux](https://github.com/kikookraft/la-fin-du-pacte/archive/main.zip) (l'archive fait 391Mo, peut prendre du temps a télécharger)
 ## **Le projet est toujour en cour de création !!!**
 
 
@@ -201,8 +201,8 @@ markr (3)
 dialg (3; 300)
 Quand j'était petit, ma grand mère m'aimait...
 Elle me faisait souvent des gâteaux...
-Mais elle et décédé du COVID-19...
-mort- (Toi aussi mdr ☺)
+Enfin voila tu merite de crever...
+mort- (mdr ☺)
 end--
 
 wasted
