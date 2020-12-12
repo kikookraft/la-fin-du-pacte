@@ -125,19 +125,23 @@ while men:
         elif event.type == pygame.MOUSEBUTTONUP:
             touched = False
  
-    if ingame == 0:
-        #detection bouton
-        if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 0 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 0 + height_box and touched == True:
-            if cooldown == 0:
-                play = 1
-                cooldown = 2
-        if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 1 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 1 + height_box and touched == True:
-            game.clear(screen)
-            pygame.time.wait(1000)
+    #if ingame == 0:
+    #detection bouton
+    if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 0 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 0 + height_box and touched == True:
+        if cooldown == 0:
+            play = 1
+            cooldown = 2
+            touched = False
 
-  
-        if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 2 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 2 + height_box and touched == True:
-            game.score.save(level, dialog, name, 1)
+    if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 1 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 1 + height_box and touched == True and credit == 0:
+        game.score.save(level,dialog,name)
+        credit = 1
+        game.credit.start()
+        touched = False
+
+
+    if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 2 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 2 + height_box and touched == True:
+        game.score.save(level, dialog, name, 1)
 
  
     if not cooldown == 0:
