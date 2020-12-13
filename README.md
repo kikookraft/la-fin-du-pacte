@@ -9,6 +9,7 @@ Bienvenu sur le repos de **La Fin Du Pacte** !!
 > Attention, la version test comporte souvent des bugs qui peuvent entrainer des crash !   
 > La version test n'est pas toujour au point pour android !
 ## **Le projet est toujour en cour de création !!!**
+**Il manque encore la majoritée niveaux et un personnage**
 
 
 ---
