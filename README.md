@@ -4,7 +4,10 @@ Une histoire interactive créée en python...
 
 Bienvenu sur le repos de **La Fin Du Pacte** !!
 
-### [Télécharger le jeux](https://github.com/kikookraft/la-fin-du-pacte/archive/main.zip) (l'archive fait 391Mo, peut prendre du temps a télécharger)
+### [Télécharger le jeux](https://github.com/kikookraft/la-fin-du-pacte/archive/main.zip) (l'archive est assez lourde, peut prendre du temps a télécharger)
+### [Télécharger la version test](https://github.com/kikookraft/la-fin-du-pacte/archive/test.zip)
+> Attention, la version test comporte souvent des bugs qui peuvent entrainer des crash !   
+> La version test n'est pas toujour au point pour android !
 ## **Le projet est toujour en cour de création !!!**
 
 

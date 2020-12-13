@@ -1,106 +1,102 @@
-import sys
 import pygame
+import random
+from itertools import cycle
 
-import overlay
-from picture import Picture, View
-from user_state import User
+class Cloud(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.Surface((50, 20))
+        self.image.set_colorkey((11, 12, 13))
+        self.image.fill((11, 12, 13))
+        pygame.draw.ellipse(self.image, pygame.Color('white'), self.image.get_rect())
+        self.rect = self.image.get_rect(topleft=(x,y))
 
-class Manager(object):
+    def update(self, dt, events):
+        self.rect.move_ip(dt/10, 0)
+        if self.rect.left >= pygame.display.get_surface().get_rect().width:
+            self.rect.right = 0
 
+class DayScene:
     def __init__(self):
+        self.clouds = pygame.sprite.Group(Cloud(0, 30), Cloud(100, 40), Cloud(400, 50))
 
-        self.background_color = (0,0,0)
-        self.resize_window((800,600))
-        self.picture = Picture()
-        self.view = View(self.picture)
+    def draw(self, screen):
+        screen.fill(pygame.Color('lightblue'))
+        self.clouds.draw(screen)
 
-        self.user = User()
+    def update(self, dt, events):
+        self.clouds.update(dt, events)
 
-        self.active_overlay = None
-        self.test_overlay = overlay.Overlay(self.user)
-        self.color_picker_overlay = overlay.ColorPickerOverlay(self.user)
-        self.custom_palette_overlay = overlay.CustomPaletteOverlay(self.user)
+class NightScene:
+    def __init__(self):
+        sr = pygame.display.get_surface().get_rect()
+        self.sky = pygame.Surface(sr.size)
+        self.sky.fill((50,0,50))
+        for x in random.sample(range(sr.width), 50):
+            pygame.draw.circle(self.sky, (200, 200, 0), (x, random.randint(0, sr.height)), 1)
+        self.clouds = pygame.sprite.Group(Cloud(70, 70), Cloud(60, 40), Cloud(0, 50), Cloud(140, 10), Cloud(100, 20))
 
-    def get_active_color(self):
-        return self.user.active_color
+    def draw(self, screen):
+        screen.blit(self.sky, (0, 0))
+        self.clouds.draw(screen)
 
-    def get_active_tool(self):
-        return self.user.active_tool
+    def update(self, dt, events):
+        self.clouds.update(dt, events)
 
-    def resize_window(self, size):
+class Fader:
 
-        self.window=pygame.display.set_mode(size,pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.RESIZABLE)
-        self.window.fill(self.background_color)
-        pygame.display.flip()
+    def __init__(self, scenes):
+        self.scenes = cycle(scenes)
+        self.scene = next(self.scenes)
+        self.fading = None
+        self.alpha = 0
+        sr = pygame.display.get_surface().get_rect()
+        self.veil = pygame.Surface(sr.size)
+        self.veil.fill((0, 0, 0))
 
-    def draw(self):
+    def next(self):
+        if not self.fading:
+            self.fading = 'OUT'
+            self.alpha = 0
 
-        #clear the screen
-        self.window.fill(self.background_color)
+    def draw(self, screen):
+        self.scene.draw(screen)
+        if self.fading:
+            self.veil.set_alpha(self.alpha)
+            screen.blit(self.veil, (0, 0))
 
-        #draw the picture
-        if self.view:
-            win_size = self.window.get_size()
-            pic_surf = self.view.draw(win_size)
+    def update(self, dt, events):
+        self.scene.update(dt, events)
 
-            self.window.blit(pic_surf, (0,0))
-
-        #draw the active overlay
-        if self.active_overlay:
-            ovr_surf = self.active_overlay.draw(self.window.get_size())
-            self.window.blit(ovr_surf, (0,0))
-
-        #update the screen
-        pygame.display.flip()
-
-    def handle_input(self):
-
-        #mouse.get_rel must only be called once a step, don't call elsewhere
-        #(because it's relative to the last call)
-        mouse_delta = pygame.mouse.get_rel()
-        mouse_pos = pygame.mouse.get_pos()
-
-        mouse_pressed = pygame.mouse.get_pressed()
-        mouse_left_pressed, mouse_mid_pressed, mouse_right_pressed = mouse_pressed
-
-        mod_pressed = pygame.key.get_mods()
-        shift_pressed = mod_pressed & pygame.KMOD_SHIFT
-        ctrl_pressed = mod_pressed & pygame.KMOD_CTRL
-        alt_pressed = mod_pressed & pygame.KMOD_ALT
-
-        self.active_overlay = None
-
-        if ctrl_pressed:
-            self.active_overlay = self.test_overlay
-        if pygame.key.get_pressed()[pygame.K_q]:
-            self.active_overlay = self.color_picker_overlay
-        if pygame.key.get_pressed()[pygame.K_q] and shift_pressed:
-            self.active_overlay = self.custom_palette_overlay
-
-
-        if self.active_overlay:
-            if mouse_left_pressed:
-                mx,my = mouse_pos
-                self.active_overlay.left_click(mx,my)
-            if mouse_right_pressed:
-                mx,my = mouse_pos
-                self.active_overlay.right_click(mx,my)
+        if self.fading == 'OUT':
+            self.alpha += 8
+            if self.alpha >= 255:
+                self.fading = 'IN'
+                self.scene = next(self.scenes)
         else:
-            #drawing mode
-            if mouse_left_pressed:
-                layer = self.picture.layers[0]
-                color = self.get_active_color()
-                mousepos = self.view.position_screen_to_picture(pygame.mouse.get_pos())
-                self.get_active_tool().draw(layer, color, mousepos, 
-                            ctrl_pressed, shift_pressed, alt_pressed)
+            self.alpha -= 8
+            if self.alpha <= 0:
+                self.fading = None
 
-            if mouse_right_pressed:
-                self.view.set_panning_relative(mouse_delta)
+def main():
+    screen_width, screen_height = 300, 300
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    clock = pygame.time.Clock()
+    dt = 0
+    fader = Fader([DayScene(), NightScene()])
 
-        for event in pygame.event.get():
-            #SYSTEM EVENTS
-            if event.type == pygame.QUIT:
-                sys.exit(0)
+    while True:
+        events = pygame.event.get()
+        for e in events:
+            if e.type == pygame.QUIT:
+                return
+            if e.type == pygame.KEYDOWN:
+                fader.next()
 
-            elif event.type == pygame.VIDEORESIZE:
-                self.resize_window(event.dict['size'])
+        fader.draw(screen)
+        fader.update(dt, events)
+
+        pygame.display.flip()
+        dt = clock.tick(30)
+
+main()

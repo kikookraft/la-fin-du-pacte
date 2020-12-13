@@ -1,7 +1,7 @@
 #importation des differents fichiers
 import pygame
 from score import Score
-#from credit import Credit
+from credit import Credit
 from level import Lvl
 from new import New
 
@@ -10,7 +10,7 @@ class Game:
         #grace a ceci , on peut faire : game.score. ...
         #cela fait gagner de la place dans main
         self.score = Score()
-        #self.credit = Credit()
+        self.credit = Credit()
         self.lvl = Lvl()
         self.new = New()
         

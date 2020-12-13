@@ -26,6 +26,12 @@ screen = pygame.display.set_mode((1080, 720))
 info = pygame.display.Info()
 width = info.current_w
 height = info.current_h
+if width == 1080 and height == 720:
+    modified = False
+    speed = 1
+else:
+    modified = True
+    speed = 3
 width_box = 320
 height_box = 75
 nbbtn = 3
@@ -51,7 +57,8 @@ ingame = 0
 
 play = 0
 cooldown = 0
-
+fade = 255
+alpha_fadein = 255
 #initialisation des musiquespygame.mixer.music.load('assets/sounds/City Space - kikookraft.mp3')
 pygame.mixer.music.load("assets/sounds/City Space - kikookraft.wav")
 pygame.mixer.music.set_volume(0.2)
@@ -77,6 +84,18 @@ xmax = info.current_w - xmin
 ymax = info.current_h - ymin
 position_fond = (xmin, ymin)
 
+
+def fadein(alpha_fadein):
+    if alpha_fadein >= 1:
+        alpha_fadein -= 1*speed
+        fnd = pygame.Surface((width, height))
+        fnd.set_alpha(alpha_fadein)  
+        fnd.fill((0,0,0))
+        screen.blit(fnd, (0, 0))
+        return alpha_fadein
+    else:
+        return True
+
 #pour l'ecran ractile
 touched = False
 #----------------------------------------------------------------------------------------------
@@ -91,18 +110,18 @@ while men:
  
     #faire bouger le titre au debut
     if logovar == 1:
-        ypos2 = ypos2 - 3
+        ypos2 = ypos2 - 3*speed
         if ypos2 < 40:
             logovar = 0 
  
     #faire bouger le fond
     if ingame == 0:
         if not ypos > 0 and HT == True :
-            ypos = ypos + 3
+            ypos = ypos + speed
         if ypos > 0 :
             HT = False
         if not ypos < -1640 and HT==False:
-            ypos = ypos - 3
+            ypos = ypos - speed
         if ypos < -width-200 :
             HT = True
  
@@ -125,19 +144,23 @@ while men:
         elif event.type == pygame.MOUSEBUTTONUP:
             touched = False
  
-    if ingame == 0:
-        #detection bouton
-        if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 0 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 0 + height_box and touched == True:
-            if cooldown == 0:
-                play = 1
-                cooldown = 2
-        if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 1 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 1 + height_box and touched == True:
-            game.clear(screen)
-            pygame.time.wait(1000)
+    #if ingame == 0:
+    #detection bouton
+    if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 0 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 0 + height_box and touched == True:
+        if cooldown == 0:
+            play = 1
+            cooldown = 2
+            touched = False
 
-  
-        if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 2 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 2 + height_box and touched == True:
-            game.score.save(level, dialog, name, 1)
+    if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 1 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 1 + height_box and touched == True and credit == 0:
+        game.score.save(level,dialog,name)
+        credit = 1
+        game.credit.start()
+        touched = False
+
+
+    if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 2 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 2 + height_box and touched == True:
+        game.score.save(level, dialog, name, 1)
 
  
     if not cooldown == 0:
@@ -205,11 +228,13 @@ while men:
            
  
             if stmn == 1:
-                mnumove = mnumove + 10
-                if mnumove == 0:
+                mnumove = mnumove + 5*speed
+                if mnumove >= 0:
                     stmn = 0
 
-    
+    if credit == 1 and fade != True:
+        fade = fadein(fade)
+
     # mise a jour de l'ecran
     clock.tick(FPS)
     pygame.display.flip()
