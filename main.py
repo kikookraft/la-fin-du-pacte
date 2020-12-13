@@ -51,7 +51,8 @@ ingame = 0
 
 play = 0
 cooldown = 0
-
+fade = 255
+alpha_fadein = 255
 #initialisation des musiquespygame.mixer.music.load('assets/sounds/City Space - kikookraft.mp3')
 pygame.mixer.music.load("assets/sounds/City Space - kikookraft.wav")
 pygame.mixer.music.set_volume(0.2)
@@ -76,6 +77,18 @@ ymin = (info.current_h - dimension_fondy) / 2
 xmax = info.current_w - xmin
 ymax = info.current_h - ymin
 position_fond = (xmin, ymin)
+
+
+def fadein(alpha_fadein):
+    if alpha_fadein >= 1:
+        alpha_fadein -= 1
+        fnd = pygame.Surface((width, height))
+        fnd.set_alpha(alpha_fadein)  
+        fnd.fill((0,0,0))
+        screen.blit(fnd, (0, 0))
+        return alpha_fadein
+    else:
+        return True
 
 #pour l'ecran ractile
 touched = False
@@ -213,7 +226,9 @@ while men:
                 if mnumove == 0:
                     stmn = 0
 
-    
+    if credit == 1 and fade != True:
+        fade = fadein(fade)
+
     # mise a jour de l'ecran
     clock.tick(FPS)
     pygame.display.flip()

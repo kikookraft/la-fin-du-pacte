@@ -33,6 +33,9 @@ class Credit:
     
     pygame.font.init()
     font = pygame.font.Font('assets/Apocalypse.ttf', 60)
+    alpha_fadeout = 0
+    fadein_finished = False
+    alpha_fadein = 255
 
     def wait(self, wait):
         for i in range(int(wait)):
@@ -57,12 +60,22 @@ class Credit:
         alpha_screen = 255
         while alpha_screen > 0:
             fnd = pygame.Surface((self.width, self.height))
-            fnd.set_alpha(2)  
+            fnd.set_alpha(1)  
             fnd.fill((0,0,0))
             self.screen.blit(fnd, (0, 0)) 
             pygame.display.flip()
-            self.wait(2)
+            self.wait(1)
             alpha_screen -= 1
+            
+    def fadein(self):
+        if self.alpha_fadein >= 1:
+            self.alpha_fadein -= 1
+            fnd = pygame.Surface((self.width, self.height))
+            fnd.set_alpha(self.alpha_fadein)  
+            fnd.fill((0,0,0))
+            self.screen.blit(fnd, (0, 0)) 
+        else:
+            return True
         
     def backgroundimg(self):
         if self.logovar == 1:
@@ -79,7 +92,7 @@ class Credit:
             self.HT = True
         self.screen.blit(self.background, (self.xmin, math.ceil(self.ypos)))
         self.screen.blit(self.logo, (self.xmin2, self.ypos2))
-
+        
     def text(self, pos, side, text):
         button_text = self.font.render(text, True, (255, 255, 255))
         self.screen.blit(button_text, (side*self.width/4-button_text.get_width()/2, self.height/2+pos))
@@ -93,7 +106,10 @@ class Credit:
                 if event.type == pygame.QUIT:
                     return
             self.backgroundimg()
-            self.boucle += 1
+            if self.fadein_finished != True:
+                self.fadein_finished = self.fadein()
+            if self.fadein_finished == True:
+                self.boucle += 1
             if self.boucle > 46:
                 self.boucle = 0
                 self.state+=1
