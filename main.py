@@ -26,6 +26,12 @@ screen = pygame.display.set_mode((1080, 720))
 info = pygame.display.Info()
 width = info.current_w
 height = info.current_h
+if width == 1080 and height == 720:
+    modified = False
+    speed = 1
+else:
+    modified = True
+    speed = 3
 width_box = 320
 height_box = 75
 nbbtn = 3
@@ -81,7 +87,7 @@ position_fond = (xmin, ymin)
 
 def fadein(alpha_fadein):
     if alpha_fadein >= 1:
-        alpha_fadein -= 1
+        alpha_fadein -= 1*speed
         fnd = pygame.Surface((width, height))
         fnd.set_alpha(alpha_fadein)  
         fnd.fill((0,0,0))
@@ -104,18 +110,18 @@ while men:
  
     #faire bouger le titre au debut
     if logovar == 1:
-        ypos2 = ypos2 - 3
+        ypos2 = ypos2 - 3*speed
         if ypos2 < 40:
             logovar = 0 
  
     #faire bouger le fond
     if ingame == 0:
         if not ypos > 0 and HT == True :
-            ypos = ypos + 3
+            ypos = ypos + speed
         if ypos > 0 :
             HT = False
         if not ypos < -1640 and HT==False:
-            ypos = ypos - 3
+            ypos = ypos - speed
         if ypos < -width-200 :
             HT = True
  
@@ -222,8 +228,8 @@ while men:
            
  
             if stmn == 1:
-                mnumove = mnumove + 10
-                if mnumove == 0:
+                mnumove = mnumove + 5*speed
+                if mnumove >= 0:
                     stmn = 0
 
     if credit == 1 and fade != True:

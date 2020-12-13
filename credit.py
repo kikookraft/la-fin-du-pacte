@@ -7,24 +7,22 @@ class Credit:
     info = pygame.display.Info()
     width = info.current_w
     height = info.current_h
+    if width == 1080 and height == 720:
+        modified = False
+        speed = 1
+    else:
+        modified = True
+        speed = 3
     credit = True
     bgpos = 0
 
     background = pygame.image.load('assets/credit-bg.jpg').convert()
-    logo = pygame.image.load('assets/logo.png').convert_alpha()
-    xmin2 = (info.current_w - logo.get_width()) / 2
-    ymin2 = (info.current_h - logo.get_height()) / 4
-    xmax2 = width - xmin2
-    ymax2 = height - ymin2
-    position_fond2 = (xmin2, ymin2)
     xmin = (info.current_w - background.get_width()) / 2
     ymin = (info.current_h - background.get_height()) / 2
     xmax = width - xmin
     ymax = height + ymin
     position_fond = (xmin, ymin)
 
-    ypos2 = ymin2
-    logovar = 1
     ypos= 0
     HT = True
 
@@ -33,6 +31,7 @@ class Credit:
     
     pygame.font.init()
     font = pygame.font.Font('assets/Apocalypse.ttf', 60)
+    font2 = pygame.font.Font('assets/Apocalypse.ttf', 80)
     alpha_fadeout = 0
     fadein_finished = False
     alpha_fadein = 255
@@ -60,16 +59,16 @@ class Credit:
         alpha_screen = 255
         while alpha_screen > 0:
             fnd = pygame.Surface((self.width, self.height))
-            fnd.set_alpha(1)  
+            fnd.set_alpha(self.speed)  
             fnd.fill((0,0,0))
             self.screen.blit(fnd, (0, 0)) 
             pygame.display.flip()
             self.wait(1)
-            alpha_screen -= 1
+            alpha_screen -= self.speed
             
     def fadein(self):
         if self.alpha_fadein >= 1:
-            self.alpha_fadein -= 1
+            self.alpha_fadein -= self.speed
             fnd = pygame.Surface((self.width, self.height))
             fnd.set_alpha(self.alpha_fadein)  
             fnd.fill((0,0,0))
@@ -78,23 +77,21 @@ class Credit:
             return True
         
     def backgroundimg(self):
-        if self.logovar == 1:
-            self.ypos2 -= 1
-            if self.ypos2 < 40:
-                self.logovar = 0 
         if not self.ypos > 0 and self.HT == True :
-            self.ypos +=0.5
+            self.ypos +=0.5*self.speed
         if self.ypos > 0 :
             self.HT = False
         if not self.ypos < -self.background.get_height()-self.height and self.HT==False:
-            self.ypos -=0.5
+            self.ypos -=0.5*self.speed
         if self.ypos < -5.9*self.height :
             self.HT = True
         self.screen.blit(self.background, (self.xmin, math.ceil(self.ypos)))
-        self.screen.blit(self.logo, (self.xmin2, self.ypos2))
         
-    def text(self, pos, side, text):
-        button_text = self.font.render(text, True, (255, 255, 255))
+    def text(self, pos, side, text, font=1):
+        if font == 1:
+            button_text = self.font.render(text, True, (255, 255, 255))
+        else:
+            button_text = self.font2.render(text, True, (255, 255, 255))
         self.screen.blit(button_text, (side*self.width/4-button_text.get_width()/2, self.height/2+pos))
 
     def start(self):
@@ -106,10 +103,12 @@ class Credit:
                 if event.type == pygame.QUIT:
                     return
             self.backgroundimg()
+            self.text(-340, 2, "LA FIN DU", 2)
+            self.text(-260, 2, "PACTE", 2)
             if self.fadein_finished != True:
                 self.fadein_finished = self.fadein()
             if self.fadein_finished == True:
-                self.boucle += 1
+                self.boucle += self.speed
             if self.boucle > 46:
                 self.boucle = 0
                 self.state+=1
@@ -128,11 +127,11 @@ class Credit:
             if self.state > 11 and self.state <= 20:
                 self.text(-30, 2, "CODE FAIT PAR")
             if self.state > 12 and self.state <= 20:
-                self.text(50, 2, "TOMY")
-            # if self.state > 13 and self.state <= 20: 
-            #     self.text(50, 2, "ET")
-            # if self.state > 14 and self.state <= 20:
-            #     self.text(50, 3, "ANTOINE") #placer antoine pour avoir fait la version 1.0
+                self.text(50, 1, "TOMY")
+            if self.state > 13 and self.state <= 20: 
+                self.text(50, 2, "ET")
+            if self.state > 14 and self.state <= 20:
+                self.text(50, 3, "ANTOINE")
             
             if self.state > 21 and self.state <= 30:
                 self.text(-30, 2, "SCENARIO FAIT PAR")
@@ -152,14 +151,37 @@ class Credit:
                 self.text(50, 2, "ET")
             if self.state > 34 and self.state <= 40:
                 self.text(50, 3, "TOMY")
-            
-            # ajouter tout les testeurs
 
-            # ajouter les gens qui ont trouvé les ressources (tomy(musique et image), samuel(autres images,musiques), antoine(images3d, personnage))
+            if self.state > 41 and self.state <= 50:
+                self.text(-30, 2, "MUSIQUES ET IMAGES")
+            if self.state > 42 and self.state <= 50:
+                self.text(50, 2, "TOMY")
             
-            # ajouter le createur original des personnages (Zach: antoine, Angela:Quentin, UtopiaJR: Antoine)
+            if self.state > 51 and self.state <= 60:
+                self.text(-30, 2, "SCENES ET RENDU 3D")
+            if self.state > 52 and self.state <= 60:
+                self.text(50, 2, "ANTOINE")
 
-            if self.state > 45:
+            if self.state > 61 and self.state <= 70:
+                self.text(-100, 2, "SCENARIO DES PERSONNAGES")
+                self.text(-30, 2, "ZACH ET UTOPIA JR")
+            if self.state > 62 and self.state <= 70:
+                self.text(50, 2, "ANTOINE")
+            
+            if self.state > 71 and self.state <= 80:
+                self.text(-100, 2, "SCENARIO DU PERSONNAGE")
+                self.text(-30, 2, "ANGELA")
+            if self.state > 72 and self.state <= 80:
+                self.text(50, 2, "QUENTIN")
+            
+            if self.state > 81 and self.state <= 90:
+                self.text(-100, 2, "CODE DE LA V 2")
+            if self.state > 82 and self.state <= 90:
+                self.text(62, 2, "TOMY")
+            
+            # attendre scenario antoine + reponse quentin
+
+            if self.state > 91:
                 self.fadeout()
                 return
 
