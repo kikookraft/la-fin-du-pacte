@@ -177,7 +177,7 @@ class Credit:
             if self.state > 81 and self.state <= 90:
                 self.text(-100, 2, "CODE DE LA V 2")
             if self.state > 82 and self.state <= 90:
-                self.text(62, 2, "TOMY")
+                self.text(-30, 2, "TOMY")
             
             # attendre scenario antoine + reponse quentin
 
