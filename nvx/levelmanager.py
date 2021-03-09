@@ -13,7 +13,8 @@ class level():
     `initialisation`\n
     `death`\n
     `wait`\n
-    '''
+    `title`\n'''
+    self.init_lvl = []
     def initialisation(self, screen, imgperso=["perso1.png","perso2.png"], posperso=[(300,0),(200,130)], scaleperso=[(500,500),(200,100)], weapon=["None","None"], background="None.jpg", music="None.wav", restart_music=False, name="None"):
         '''Permet d'initialiser l'écran!\n
         `screen` = écran (variable screen),\n 
@@ -25,6 +26,8 @@ class level():
         `music` = musique a mettre (str),\n 
         `restart_music` = redémarer ou pas la musique (true/false)\n
         `name` = variable contenant le nom du personnage'''
+        #enregister variable pour les dialogues
+        self.init_lvl = [screen, imgperso, posperso, scaleperso, weapon, background, music, False, name]
         #écran de fond
         background1 = str("assets/bg/"+background)
         bgd = pygame.image.load(background1)
@@ -51,8 +54,7 @@ class level():
         '''Affiche l'écran de mort du joueur\n
         `screen` = écran\n
         `raison` = texte a afficher en dessous du message 'tu es mort'\n
-        retourne 1 si le joueur veut quitter\n
-        '''
+        retourne 1 si le joueur veut quitter\n'''
         pygame.mixer.music.stop()
         pygame.mixer.music.load("assets/sounds/death.mp3")
         pygame.mixer.music.play(loops=-1) 
@@ -75,8 +77,7 @@ class level():
         '''Pour attendre un peu dans le jeu (sans bloquer l'écran sur windows)\n
         `initialisation`\n
         `wait` = temps a attendre (nb de secondes × 100 , ex: pour 5 sec mettre 500)\n
-        retourne 1 si le joueur veut quitter\n
-        '''
+        retourne 1 si le joueur veut quitter\n'''
         for i in range(int(wait)):
             pygame.time.wait(10)
             try:
@@ -91,14 +92,18 @@ class level():
                         return 0
             except:
                 pass
+    
+    def title(self, title):
+        '''Changer le titre de la fenetre\n
+        '''
+        pygame.display.set_caption(title)
 
 class story():
     '''Classe qui gère le déroulement de l'histoire (dialogues, choixs)\n
     Cette classe comprend les fonctions:\n
     `choice`\n
-    `death`\n
-    `wait`\n
-    '''
+    `dialogue`\n'''
+
     def choice(self, screen, nbchoix, choix1, choix2, choix3="None"): #fonction pour generer des choix
         '''Pour créer un écran de choix\n
         `screen` = écran (variable screen)\n
@@ -107,8 +112,7 @@ class story():
         `choix2` = texte du choix 2 \n
         `choix3` = texte du choix 3 (si 3 choix) \n
         retourne 0 si le joueur veut quitter
-        retourne 1, 2 ou 3 en fonction du choix du joueur
-        '''
+        retourne 1, 2 ou 3 en fonction du choix du joueur'''
         font = pygame.font.SysFont('Helvetica', 22, bold=True)
         choice = True
         i = 0
@@ -131,7 +135,6 @@ class story():
                     button_text = font.render(TEXT, True, (255, 255, 255))
                     screen.blit(button_text, (tt*width/3+20, height-100))
                     i+=1
-
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.quit:
                     return 0
@@ -157,247 +160,92 @@ class story():
                         pygame.draw.rect(screen, (255,255,255), (2*width/3+8, height-113, width/3-16, 106), 6)
                         choice = False
                         return 3
-
-
-    def play(self, screen, level, dialog, name):
-        level = int(level)
-        dialog = int(dialog)
-        name = str(name)
-        nvx = []
-        skip = 0
-        towait = "None"
-        init = 0
-        initdial = 0
-        #recherche des fichiers du niveau
-        if name == "Zach":
-            if level == 0:
-                file = "nvx/tuto.txt"
-            elif level == 1:
-                file = "nvx/nvx1.txt"
-            elif level == 2:
-                file = "nvx/nvx2.txt"
-            elif level == 3:
-                file = "nvx/nvx3.txt"
-            elif level == 4:
-                file = "nvx/nvx4.txt"
-        elif name == "Angela":
-            if level == 0:
-                file = "nvx/tuto.txt"
-            elif level == 1:
-                file = "nvx/nvx1A.txt"
-            elif level == 2:
-                file = "nvx/nvx2A.txt"
-            elif level == 3:
-                file = "nvx/nvx3A.txt"
-            elif level == 4:
-                file = "nvx/nvx4A.txt"
-        elif name == "UtopiaJr":
-            if level == 0:
-                file = "nvx/tuto.txt"
-            elif level == 1:
-                file = "nvx/nvxU.txt"
-            elif level == 2:
-                file = "nvx/nvxUU.txt"
-            elif level == 3:
-                file = "nvx/nvxUUU.txt"
-            elif level == 4:
-                file = "nvx/nvxX.txt"
-        else:
-            file = "nvx/tuto.txt"
-            
-        #ouverture du fichier
-        try:
-            f = open(str(file), 'r', encoding='utf-8')
-        except FileNotFoundError:
-            raise FileNotFoundError(file,"Le fichier n'a pas été trouvé ",file,"File Not Found")
-        line = f.readline().rstrip('\n')
-        sound = None
-        while line:
-            if int(dialog) != 0 and init != 0 and initdial == 0:
-                towait = "markr ("+str(dialog)+")"
-                initdial = 1
-
-            if not str(towait) == "None":
-                while line!=str(towait):
-                    line = f.readline().rstrip('\n')
-                else:
-                    towait = "None"
-
-            else:
-                #fin du niveau
-                if line[0:5] == "end--":
-                    try:
-                        sound.stop()
-                    except:
-                        pass
-                    return level, dialog, name
-                
-                #niveau suivant
-                elif line[0:5] == "end++":
-                    try:
-                        sound.stop()
-                    except:
-                        pass
-                    return level+1, 0, name
-                
-                #recuperer choix du perso dans le tuto
-                elif file == "nvx/tuto.txt" and line[0:6] == "output":
-                    name = line[8:-1]
-
-                #dialogue suivant
-                elif line[0:5] == "markr":
-                    dialog = line[7:-1]
-                    initdial = 1
-                
-                #saut dans le fichier
-                elif line[0:6] == "towait":
-                    towait = str(line[8:-1])
-
-                #appel de l'initialisation
-                elif line[0:5] == "init-":
-                    varinit = tuple(str(line[7:-1]).split('; '))
-                    # 0, 1 et 2 sont des tuples
-                    self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], varinit[6], name)
-                    init+=1
-
-                #afficher des images
-                elif line[0:5] == "img--":
-                    data_img = tuple(str(line[7:-1]).split('; '))
-                    img = pygame.image.load(data_img[0])
-                    pos = data_img[1].split(',')
-                    scale = data_img[2].split(',')
-                    imgprint = pygame.transform.scale(img,(int(scale[0]),int(scale[1])))
-                    screen.blit(imgprint,(int(pos[0]),int(pos[1])))
-
-                #jouer un son
-                elif line[0:5] == "sound":
-                    sound = pygame.mixer.Sound(line[7:-1])
-                    sound.set_volume(0.5)
-                    sound.play()
-
-                #mettre un titre
-                elif line[0:5] == "title":
-                    title = line[7:-1]
-                    pygame.display.set_caption(title)
-
-                #attendre un certain moment (wait est en 10eme de secondes)
-                elif line[0:5] == "temps":
-                    timetowait = line[7:-1]
-                    tmp = self.wait(timetowait)
-                    if tmp == 1:
-                        return level, dialog, name
-                
-                #mort
-                elif line[0:5] == "mort-":
-                    raison = line[7:-1]
-                    tmp = self.mort(screen, raison)
-                    return level, 0, name
-                
-                #vidéo
-                # elif line[0:5] == "video":
-                #    try:
-                #        sound.stop()
-                #    except:
-                #        pass
-                #    video = str(line[7:-1])
-                #    clip = VideoFileClip(video).resize((1080,720))
-                #    clip.preview(fps=30)
-
-                elif line[0:5] == "dialg":
-                    self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False, name)
-                    font = pygame.font.SysFont('Helvetica', 40, bold=True)
-                    scen = 1
-                    y = 21
-                    nb = 0
-                    number = 0
-                    remaindialog = True
-                    texte_remain = "None"
-                    data_text = line[7:-1]
-                    dialog_data = list(data_text.split('; '))
-                    while remaindialog:
-                        if texte_remain != "None":
-                            texte = texte_remain
-                            texte_remain = "None"
-                        elif number+1 <= int(dialog_data[0]):
-                            texte = f.readline().rstrip('\n')
-                            number+=1
-                        else:
-                            remaindialog = False
-                            break
-                        fnd = pygame.Surface((width-40, 48))
-                        fnd.set_alpha(200)  
-                        fnd.fill((100, 5, 5))
-                        screen.blit(fnd, (20, y)) 
-                        r = ""
-                        x = 0
-                        x2 = 0
-                        skip_dial = False
-                        textesave = texte
-                        text_width = 0
-                        # systeme pour passer a la ligne le texte quand il est trop long
-                        if font.render(str(texte), True, (255,255,255)).get_width() > width-60:
-                            while font.render(str(texte), True, (255,255,255)).get_width() > width-60:
-                                texte = texte[:-1]
-                            while texte[len(texte)-1] != " ": #voir ou est l'espace précédent pour eviter de couper des mots
-                                texte = texte[:-1]
-                            texte_remain = textesave[len(texte):]
-                        for l in texte: #morceau de code pour afficher les lettres une par une
-                            text = font.render(str(l), True, (255, 255, 255)) 
-                            x+=text.get_width()
-                            screen.blit(text, (x2+30,y))
-                            x2 = x
-                            if skip_dial == False:
-                                tmp = self.wait(4)
-                            if tmp == 1:
-                                return level, dialog, name
-                            elif tmp == 0:
-                                skip_dial = True
-                            pygame.display.flip()
-                        # for l in texte:
-                        #     r = r + l
-                        #     text = font.render(str(r), True, (255, 255, 255))
-                        #     #text_width = text.get_width()
-                        #     screen.blit(text, (30,y))
-                        #     tmp = self.wait(4)
-                        #     if tmp == 1:
-                        #         return level, dialog, name
-                        #     elif tmp == 0:
-                        #         text = font.render(str(texte), True, (255, 255, 255))
-                        #         screen.blit(text, (30,y))
-                        #         pygame.display.flip()
-                        #         break
-                        #     pygame.display.flip()
-                        y += 48
-                        pygame.display.flip()
-                        tmp = self.wait(dialog_data[1])
-                        if tmp == 1:
-                            return level, dialog, name
-                    fnd = pygame.Surface((20, 20))
-                    fnd.set_alpha(255)  
-                    fnd.fill((255,255,255))
-                    screen.blit(fnd, (width-20, 0))
-                    pygame.display.flip()
-                    while nb == 0:
-                        for event in pygame.event.get():
-                            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN: #and event.key == pygame.K_s
-                                nb = 1
-                                if dialog_data[-1] == "True":
-                                    self.initialisation(screen, varinit[0], varinit[1], varinit[2], varinit[3], varinit[4], varinit[5], False, name)
-                            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
-                                return level, dialog, name
-
-                #generation des choix
-                elif line[0:5] == "choix":
-                    rslt = self.choice(screen, line)
-                    if rslt == 0:
-                        return level, dialog, name
-                    ln = line[7:-1]
-                    tpl = tuple(ln.split('; '))
-                    towait = str(tpl[int(tpl[0])+rslt])
-
+    
+    def dialogue(self, list_dialog=["Prhase numéro une","Phrase numéro 2"], time_between=100, make_init=True):
+        '''Pour créer un écran de choix\n
+        `list_dialog` = Liste des phrases a afficher (liste de str)\n
+        `time_between` = Temp d'attente entre chaque dialogue avant d'afficher le prochain (temp en sec * 100  , 1 sec => 100)\n
+        `make_init` = Si True: faire l'initialisation de l'écran pour effacer le texte, mettre a False pour laisser le texte affiché\n
+        exemples: si il y a une question et l'action suivante est un choix (pour laisser la question visible)
+        Une fois tout les dialogues fait (ceux de la liste), le joueur doit cliquer \n
+        pour continuer et passer a la suite (passer aux lignes de code suivantes) \n
+        retourne 1 si le joueur veut quitter\n'''
+        self.initialisation(self.init_lvl[0], self.init_lvl[1], self.init_lvl[2], self.init_lvl[3], self.init_lvl[4], self.init_lvl[5], self.init_lvl[6], self.init_lvl[7], self.init_lvl[8])
+        font = pygame.font.SysFont('Helvetica', 40, bold=True)
+        scen = 1
+        y = 21
+        nb = 0
+        number = 0
+        remaindialog = True
+        texte_remain = "None"
+        for current_speech in list_dialog:
+            fnd = pygame.Surface((width-40, 48))
+            fnd.set_alpha(200)  
+            fnd.fill((100, 5, 5))
+            screen.blit(fnd, (20, y)) 
+            r = ""
+            x = 0
+            x2 = 0
+            skip_dial = False
+            textesave = current_speech
+            text_width = 0
+            # systeme pour passer a la ligne le texte quand il est trop long
+            if font.render(str(current_speech), True, (255,255,255)).get_width() > width-60:
+                while font.render(str(current_speech), True, (255,255,255)).get_width() > width-60:
+                    current_speech = current_speech[:-1]
+                while current_speech[len(current_speech)-1] != " ": #voir ou est l'espace précédent pour eviter de couper des mots
+                    current_speech = current_speech[:-1]
+                texte_remain = textesave[len(current_speech):]
+            for l in current_speech: #morceau de code pour afficher les lettres une par une
+                text = font.render(str(l), True, (255, 255, 255)) 
+                x+=text.get_width()
+                screen.blit(text, (x2+30,y))
+                x2 = x
+                if skip_dial == False:
+                    tmp = self.wait(4)
+                if tmp == 1:
+                    return 1
+                elif tmp == 0:
+                    skip_dial = True
+                pygame.display.flip()
+            y += 48
             pygame.display.flip()
-            tmp = self.wait(10)
+            tmp = self.wait(time_between)
             if tmp == 1:
-                return level, dialog, name
-            if towait == "None":
-                line = f.readline().rstrip('\n')
+                return 1
+        fnd = pygame.Surface((20, 20))
+        fnd.set_alpha(255)  
+        fnd.fill((255,255,255))
+        screen.blit(fnd, (width-20, 0))
+        pygame.display.flip()
+        while nb == 0:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN: #and event.key == pygame.K_s
+                    nb = 1
+                    if make_init:
+                        self.initialisation(self.init_lvl[0], self.init_lvl[1], self.init_lvl[2], self.init_lvl[3], self.init_lvl[4], self.init_lvl[5], self.init_lvl[6], self.init_lvl[7], self.init_lvl[8])
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
+                    return 1
+
+class media():
+    '''Cette classe sert a afficher/ecouter des source de médias\n
+    comme des images, des effets sonores, ...
+    Cette classe comprend les fonctions:\n
+    `image`\n
+    `sound`\n'''
+
+    def image(self, file, pos, scale):
+        '''Afficher une image\n
+        `file` = fichier de l'image a afficher\n
+        `pos` = position de l'image\n
+        `scale` = taille de l'image (pour redimensionner)\n'''
+        imgprint = pygame.transform.scale(file,(int(scale[0]),int(scale[1])))
+        screen.blit(imgprint,(int(pos[0]),int(pos[1])))
+    
+    def sound(self, file, vol=0.5):
+        '''Jouer un son\n
+        `file` = fichier du son\n
+        `vol` = volume du son\n'''
+        sound = pygame.mixer.Sound(file)
+        sound.set_volume(vol)
+        sound.play()
