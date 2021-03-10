@@ -14,7 +14,8 @@ class level():
     `death`\n
     `wait`\n
     `title`\n'''
-    self.init_lvl = []
+    init_lvl = []
+
     def initialisation(self, screen, imgperso=["perso1.png","perso2.png"], posperso=[(300,0),(200,130)], scaleperso=[(500,500),(200,100)], weapon=["None","None"], background="None.jpg", music="None.wav", restart_music=False, name="None"):
         '''Permet d'initialiser l'écran!\n
         `screen` = écran (variable screen),\n 
@@ -27,14 +28,14 @@ class level():
         `restart_music` = redémarer ou pas la musique (true/false)\n
         `name` = variable contenant le nom du personnage'''
         #enregister variable pour les dialogues
-        self.init_lvl = [screen, imgperso, posperso, scaleperso, weapon, background, music, False, name]
+        level.init_lvl = [screen, imgperso, posperso, scaleperso, weapon, background, music, False, name]
         #écran de fond
         background1 = str("assets/bg/"+background)
         bgd = pygame.image.load(background1)
         bgd = pygame.transform.scale(bgd, (width,height))
         screen.blit(bgd, bgd.get_rect())
         #personnage
-        if imgperso[0] != "None":
+        if imgperso[0] != "None" and imgperso != "None":
             for perso in imgperso:
                 if perso == "perso" and name != "None":
                     perso = str(name+".png")
@@ -104,13 +105,13 @@ class story():
     `choice`\n
     `dialogue`\n'''
 
-    def choice(self, screen, nbchoix, choix1, choix2, choix3="None"): #fonction pour generer des choix
+    def choice(self, screen, nbchoix, choix1=[], choix2=[], choix3=["None"]): #fonction pour generer des choix
         '''Pour créer un écran de choix\n
         `screen` = écran (variable screen)\n
         `nbchoix` = nombre de choix possibles (2 ou 3) \n
-        `choix1` = texte du choix 1 \n
-        `choix2` = texte du choix 2 \n
-        `choix3` = texte du choix 3 (si 3 choix) \n
+        `choix1` = texte du choix 1 (liste, 3 éléments max (3 lignes max))\n
+        `choix2` = texte du choix 2 (liste, 3 éléments max (3 lignes max))\n
+        `choix3` = texte du choix 3 (si 3 choix)(liste, 3 éléments max (3 lignes max)) \n
         retourne 0 si le joueur veut quitter
         retourne 1, 2 ou 3 en fonction du choix du joueur'''
         font = pygame.font.SysFont('Helvetica', 22, bold=True)
@@ -122,18 +123,39 @@ class story():
                 for tt in range(3):
                     pygame.draw.rect(screen, (100, 5, 5), (tt*width/3+10, height-110, width/3-20, 100))
                     if tt == 0:
-                        TEXT=choix1
-                        TEXT2= None
+                        TEXT=choix1[0]
+                        try: TEXT2= choix1[1]
+                        except:pass
+                        try: TEXT3= choix1[2]
+                        except:pass
                     if tt == 1 and nbchoix == 3:
                         TEXT=choix2
+                        try: TEXT2= choix2[1]
+                        except:pass
+                        try: TEXT3= choix2[2]
+                        except:pass
                     if tt == 1 and nbchoix == 2:
                         TEXT=""
+                        TEXT2= ""
+                        TEXT3= ""
                     if tt == 2 and nbchoix == 3:
                         TEXT=choix3
+                        try: TEXT2= choix3[1]
+                        except:pass
+                        try: TEXT3= choix3[2]
+                        except:pass
                     if tt == 2 and nbchoix == 2:
                         TEXT=choix2
+                        try: TEXT2= choix2[1]
+                        except:pass
+                        try: TEXT3= choix2[2]
+                        except:pass
                     button_text = font.render(TEXT, True, (255, 255, 255))
                     screen.blit(button_text, (tt*width/3+20, height-100))
+                    button_text2 = font.render(TEXT2, True, (255, 255, 255))
+                    screen.blit(button_text2, (tt*width/3+20, height-70))
+                    button_text3 = font.render(TEXT3, True, (255, 255, 255))
+                    screen.blit(button_text3, (tt*width/3+20, height-50))
                     i+=1
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.quit:
@@ -170,7 +192,7 @@ class story():
         Une fois tout les dialogues fait (ceux de la liste), le joueur doit cliquer \n
         pour continuer et passer a la suite (passer aux lignes de code suivantes) \n
         retourne 1 si le joueur veut quitter\n'''
-        self.initialisation(self.init_lvl[0], self.init_lvl[1], self.init_lvl[2], self.init_lvl[3], self.init_lvl[4], self.init_lvl[5], self.init_lvl[6], self.init_lvl[7], self.init_lvl[8])
+        level.initialisation(level.init_lvl[0], level.init_lvl[1], level.init_lvl[2], level.init_lvl[3], level.init_lvl[4], level.init_lvl[5], level.init_lvl[6], level.init_lvl[7], level.init_lvl[8])
         font = pygame.font.SysFont('Helvetica', 40, bold=True)
         scen = 1
         y = 21
@@ -223,7 +245,7 @@ class story():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN: #and event.key == pygame.K_s
                     nb = 1
                     if make_init:
-                        self.initialisation(self.init_lvl[0], self.init_lvl[1], self.init_lvl[2], self.init_lvl[3], self.init_lvl[4], self.init_lvl[5], self.init_lvl[6], self.init_lvl[7], self.init_lvl[8])
+                        self.initialisation(level.init_lvl[0], level.init_lvl[1], level.init_lvl[2], level.init_lvl[3], level.init_lvl[4], level.init_lvl[5], level.init_lvl[6], level.init_lvl[7], level.init_lvl[8])
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or event.type == pygame.QUIT:
                     return 1
 
