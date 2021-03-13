@@ -1,6 +1,0 @@
-init- (perso; 650,225; 300,500; None; Bidonville.jpg; 02.  Musique libre de droits  La Grande Table - Delnica-1.wav; True)
-title (La Fin Du Pacte - Niveau 1)
-dialg (2; 0)
-Ce niveau est encore en cour de création...
-Revien plus tard !!!
-end--

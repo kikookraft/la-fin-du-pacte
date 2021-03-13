@@ -1,8 +1,6 @@
 # -*- coding : utf8 -*-
 import pygame
 from game import Game
-from level import Lvl
-from score import Score
 import os
 pygame.init()
 level = 0
@@ -12,14 +10,14 @@ clock=pygame.time.Clock()
  
 #charger le jeux et les scores
 game = Game()
-scre = game.score.load()
+scre = game.score().load()
 level = scre[0]
 dialog = scre[1]
 name = scre[2]
 
 credit = 0
 FPS = 100
- 
+
 #fenetre
 pygame.display.set_caption("La fin du pacte - Menu")
 screen = pygame.display.set_mode((1080, 720))
@@ -131,13 +129,15 @@ while men:
             men = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
             men = False
-            game.score.save(level, dialog, name , 1)
+            game.score().save(level, dialog, name)
+            pygame.quit()
+            quit()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r :
-            game.new.new()
+            game.new().new()
             level = 0
             dialog = 0
             name = 'None'
-            game.score.save(level, dialog, name , 1)
+            game.score().save(level, dialog, name , 1)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             touched = True
             zone = pygame.mouse.get_pos()
@@ -153,14 +153,16 @@ while men:
             touched = False
 
     if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 1 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 1 + height_box and touched == True and credit == 0:
-        game.score.save(level,dialog,name)
+        game.score().save(level,dialog,name)
         credit = 1
-        game.credit.start()
+        game.credit().start()
         touched = False
 
 
     if pygame.mouse.get_pos()[0] > mnumove + width/2 - width_box/2 and pygame.mouse.get_pos()[0] < mnumove + width/2 + width_box/2 and pygame.mouse.get_pos()[1] > height/2 - 75 + 150 * 2 and pygame.mouse.get_pos()[1] < height/2 - 75 + 150 * 2 + height_box and touched == True:
-        game.score.save(level, dialog, name, 1)
+        game.score().save(level, dialog, name)
+        pygame.quit()
+        quit()
 
  
     if not cooldown == 0:
@@ -173,16 +175,20 @@ while men:
         ingame = 1
         game.clear(screen)
         pygame.mixer.music.stop()
-        fin = game.lvl.play(screen, level, dialog, name)
+        fin = game.lvl().play(screen, level, dialog, name)
         if fin != None:
             level = fin[0]
             dialog = fin[1]
             name = fin[2]
+            game.score().save(level,dialog,name)
+            if fin[3] == True:
+                pygame.quit()
+                quit()
         else:
+            game.score().save(level,dialog,name)
             level = 0
             dialog = 0
             name = 0
-        game.score.save(level,dialog,name)
         pygame.event.clear()
         game.clear(screen)
         pygame.display.set_caption("La fin du pacte")
