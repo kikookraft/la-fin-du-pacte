@@ -19,6 +19,7 @@ class Game:
         width = info.current_w
         height = info.current_h
 
+        # Importation des niveaux (oui je le fait en plain millieu XD)
         from nvx.tuto import Tuto
 
         def play(self, screen, level, dialog, name):
@@ -61,30 +62,26 @@ class Game:
                 elif level == 4:
                     file = "nvx/nvxX.py"
             else:
-                print("coucou")
-                nvx = self.Tuto().tuto(screen)
-                print(nvx)
-                file = "nvx/tuto.py"
+                # file = "nvx/tuto.py"
+                nvx = self.Tuto().game(screen)
+                pygame.mixer.music.stop()
+                if nvx[3] == True:
+                    return nvx[0], nvx[1], nvx[2], True
+                else:
+                    return nvx[0], nvx[1], nvx[2], False
+                
 
 
 
     class new:
         def new(self):
-            print("\nSupression de 'nvx/nvx2/player.txt'")
-            try:
-                os.remove('nvx/nvx2/player.txt')
-            except:
-                print("Erreur, il n'y a rien a suprimmer dans le niveau 2!\n")
-            print("\nSupression de 'data/player.txt'")
-            try:
-                os.remove('data/player.txt')
-            except:
-                print("Erreur, il n'y a rien a suprimmer dans le fichier global!\n")
-            print("\nSupression de 'nvx/nvx3/player.txt'")
-            try:
-                os.remove('nvx/nvx3/player.txt')
-            except:
-                print("Erreur, il n'y a rien a suprimmer dans le niveau 3!\n")
+            print("Cette fonctionnalitée est temporairement désactivée !")
+            # print("\nSupression de 'nvx/nvx2/player.txt'")
+            # try:
+            #     os.remove('nvx/nvx2/player.txt')
+            # except:
+            #     print("Erreur, il n'y a rien a suprimmer dans le niveau 2!\n")
+            # print("\nSupression de 'data/player.txt'")
 
 
 
@@ -117,22 +114,6 @@ class Game:
             f.write(str(level)+"\r")
             f.write(str(dialog)+"\r") 
             f.write(str(name)+"\r")
-
-        class save_file:
-            def create(self, file_name, data):
-                with open(file_name, 'w') as outfile:
-                    json.dump(data, outfile, indent=4)
-            
-            def read(self, file_name):
-                with open(file_name, "r") as f:
-                    data = json.load(f)
-                return data
-            
-            # Pour créer un fichier de sauvegarde json:
-            # score.File.create("test.json", {'name':"Zach",'choice':[1,5,1,5,3,8,1],'machettes':True})
-            # 
-            # Pour le lire et recuperer les infos du fichier
-            # data = score.File.read("test.json")
 
 
 

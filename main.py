@@ -129,7 +129,9 @@ while men:
             men = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
             men = False
-            game.score().save(level, dialog, name , 1)
+            game.score().save(level, dialog, name)
+            pygame.quit()
+            quit()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r :
             game.new().new()
             level = 0
@@ -178,11 +180,15 @@ while men:
             level = fin[0]
             dialog = fin[1]
             name = fin[2]
+            game.score().save(level,dialog,name)
+            if fin[3] == True:
+                pygame.quit()
+                quit()
         else:
+            game.score().save(level,dialog,name)
             level = 0
             dialog = 0
             name = 0
-        game.score().save(level,dialog,name)
         pygame.event.clear()
         game.clear(screen)
         pygame.display.set_caption("La fin du pacte")
