@@ -1,5 +1,4 @@
 # La Fin Du Pacte
-<<<<<<< HEAD
 ![Bannière](https://github.com/kikookraft/la-fin-du-pacte/blob/main/.github_res/banniere-small.png "La Fin Du Pacte")
 
 Bienvenu sur le repos de **La Fin Du Pacte** !!
