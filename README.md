@@ -45,7 +45,7 @@ Bienvenu sur le repos de **La Fin Du Pacte** !!
     - Ouvrir le fichier `main.py` avec l'application puis lancer le jeux
 
     > Attention ! Ne retournez pas le téléphone en pleine partie, cela fait crash le jeu !   
-    > Penser a retourner votre téléphone avant.
+    > Pensez à retourner votre téléphone avant.
 
 ---
 
@@ -60,19 +60,24 @@ Bienvenu sur le repos de **La Fin Du Pacte** !!
 2. ### Dans le jeux
     - Sur les dialogues :
         - `ESPACE` passer a la suite quand le carré blanc en haut a droite est affiché
-        - `S` pour passer les dialogues et les attentes
+        - `S` pour passer les dialogues
+        - `Cliquez sur l'écran` pour passer les dialogues
     - Sur les choix:
         - `A` ou `1` ou `&` (clavier numerique ou pas) pour choisir le choix **A**
         - `B` ou `2` ou `é` (clavier numerique ou pas) pour choisir le choix **B**
         - `B` ou `3` ou `"` (clavier numerique ou pas) pour choisir le choix **C** (si il est disponible)
-    - Valable tout le temps du jeux:
+        - `Cliquez sur l'écran` pour selectioner un choix
+    - Valable tout le jeu:
         - `ECHAP` pour revenir au menu
 ---
 
 ### Le jeux se structure en plusieurs fichiers :
  
 1. **main.py** qui est le fichier principal, c'est lui qu'il faut lancer pour jouer au jeux!  
-2. **game.py** est le fichier qui sert a faire fonctionner le menu et la gestion des fichiers **main.py**
+2. **game.py** est le fichier qui sert a faire fonctionner le menu et la gestion des fichiers
 3. **nvx/levelmanager.py** est le fichier qui sert de module pour les niveaux, il contient le système de dialogue, choix, affichage, son, sauvegardes, ... C'est le moteur du jeu !
+4. Tout les autres fichier dans **nvx/** sont les differents niveaux du jeu.
 
 ---
+
+Dernière mise à jour: **Le 13/03/2021 à 21:49**

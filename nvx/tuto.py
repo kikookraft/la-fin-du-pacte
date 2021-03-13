@@ -28,15 +28,6 @@ class Tuto:
         lvm.story().dialogue(["Inconnue - Ok, dépeche-toi de te préparer {}".format(self.name),"les policiers vont arriver !"],0)
         if result == "exit": return 0, self.dialog, self.name, False
         elif result == "quit": return 0, self.dialog, self.name, True
-
-        pygame.mixer.stop()
-        # background = pygame.image.load('nvx/tuto/choix-perso.jpg').convert()
-        # screen.blit(background, (0,0))
-        # pygame.display.flip()
-        # font = pygame.font.SysFont('Helvetica', 22, bold=True)
-
         
-        with open("data/start.txt", "w") as fichier:
-	        fichier.write("Tu vien de demarrer ta premiere partie !\nNe suprimme pas ce fichier, il est important!")
-        return 1, self.dialog, self.name, False
+        return 1, 0, self.name, False
 
