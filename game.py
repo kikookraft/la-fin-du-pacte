@@ -11,8 +11,6 @@ class Game:
     def clear(self, screen):
         screen.fill((0,0,0))
 
-
-
     class lvl:   
         screen = pygame.display.set_mode((1080,720))
         info = pygame.display.Info()
@@ -21,6 +19,7 @@ class Game:
 
         # Importation des niveaux (oui je le fait en plain millieu XD)
         from nvx.tuto import Tuto
+        from nvx.exemple import dawa
 
         def play(self, screen, level, dialog, name):
             level = int(level)
@@ -28,7 +27,16 @@ class Game:
             name = str(name)
 
             #recherche des fichiers du niveau
-            if name == "Zach":
+            if level == -1: #niveau de test
+                file = "nvx/exemple.py"
+                nvx = self.dawa().game(screen, name)
+                pygame.mixer.music.stop()
+                if nvx[3] == True:
+                    return nvx[0], nvx[1], nvx[2], True
+                else:
+                    return nvx[0], nvx[1], nvx[2], False
+
+            elif name == "Zach":
                 if level == 0:
                     file = "nvx/tuto.py"
                 elif level == 1:
@@ -61,8 +69,8 @@ class Game:
                     file = "nvx/nvxUUU.py"
                 elif level == 4:
                     file = "nvx/nvxX.py"
+
             else:
-                # file = "nvx/tuto.py"
                 nvx = self.Tuto().game(screen)
                 pygame.mixer.music.stop()
                 if nvx[3] == True:

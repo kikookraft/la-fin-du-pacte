@@ -60,7 +60,7 @@ class level():
         retourne "exit" si le joueur veut quitter le niveau\n
         retourne "quit" si le joueur veux quitter le jeux\n'''
         pygame.mixer.music.stop()
-        pygame.mixer.music.load("assets/sounds/death.mp3")
+        pygame.mixer.music.load("assets/sounds/death.wav")
         pygame.mixer.music.play(loops=-1) 
         pygame.mixer.music.set_volume(0.3)
         font = pygame.font.SysFont('Helvetica', 40, bold=True)
@@ -197,7 +197,7 @@ class story():
                         choice = False
                         return 3
     
-    def dialogue(self, list_dialog=["Prhase numéro une","Phrase numéro 2"], time_between=100, make_init=True):
+    def dialogue(self, list_dialog=["Prhase numéro une","Phrase numéro 2"], time_between=10, make_init=True):
         '''Pour créer un écran de choix\n
         `list_dialog` = Liste des phrases a afficher (liste de str)\n
         `time_between` = Temp d'attente entre chaque dialogue avant d'afficher le prochain (temp en sec * 100  , 1 sec => 100)\n
@@ -275,13 +275,14 @@ class media():
     `sound`\n
     `save_file` (classe pour fichier de sauvegarde)'''
 
-    def image(self, file, pos, scale):
+    def image(self, file, pos=(0,0), scale=(50,50)):
         '''Afficher une image\n
         `file` = fichier de l'image a afficher\n
         `pos` = position de l'image\n
         `scale` = taille de l'image (pour redimensionner)\n'''
-        imgprint = pygame.transform.scale(file,(int(scale[0]),int(scale[1])))
-        screen.blit(imgprint,(int(pos[0]),int(pos[1])))
+        img = pygame.image.load(file)
+        imgprint = pygame.transform.scale(img,scale)
+        screen.blit(imgprint,pos)
     
     def sound(self, file, vol=0.5):
         '''Jouer un son\n
@@ -307,7 +308,7 @@ class media():
             except FileNotFoundError: raise FileNotFoundError("Le fichier '{}' n'a pas été trouvé!".format(file_name))
         
         # Pour créer un fichier de sauvegarde json:
-        # score.File.create("test.json", {'name':"Zach",'choice':[1,5,1,5,3,8,1],'machettes':True})
+        # score.File().create("test.json", {'name':"Zach",'choice':[1,5,1,5,3,8,1],'machettes':True})
         # 
         # Pour le lire et recuperer les infos du fichier
-        # data = score.File.read("test.json")
+        # data = score.File().read("test.json")
