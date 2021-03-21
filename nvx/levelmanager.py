@@ -17,7 +17,7 @@ class level():
     `title`\n'''
     init_lvl = []
 
-    def initialisation(self, screen, imgperso=["perso1.png","perso2.png"], posperso=[(300,0),(200,130)], scaleperso=[(500,500),(200,100)], weapon=["None","None"], background="None.jpg", music="None.wav", restart_music=False, name="None"):
+    def initialisation(self, screen, imgperso=["perso1.png","perso2.png"], posperso=[(650,220),(150,220)], scaleperso=[(300,500),(300,500)], weapon=["None","None"], background="None.jpg", music="None.wav", restart_music=False, name="None"):
         '''Permet d'initialiser l'écran!\n
         `screen` = écran (variable screen),\n 
         `imgperso` = images de chaque personnages, écrire `perso` pour utiliser le personnage du joueur (liste),\n 
@@ -31,10 +31,11 @@ class level():
         #enregister variable pour les dialogues
         level.init_lvl = [screen, imgperso, posperso, scaleperso, weapon, background, music, False, name]
         #écran de fond
-        background1 = str('assets/bg/{}'.format(background))
-        bgd = pygame.image.load(background1)
-        bgd = pygame.transform.scale(bgd, (width,height))
-        screen.blit(bgd, bgd.get_rect())
+        if background not in ["None",None,"None.jpg"]:
+            background1 = str('assets/bg/{}'.format(background))
+            bgd = pygame.image.load(background1)
+            bgd = pygame.transform.scale(bgd, (width,height))
+            screen.blit(bgd, bgd.get_rect())
         #personnage
         if imgperso[0] != "None" and imgperso != "None":
             for perso in imgperso:
@@ -52,6 +53,7 @@ class level():
             pygame.mixer.music.load("assets/sounds/%s" %(music))
             pygame.mixer.music.play(loops=-1) 
             pygame.mixer.music.set_volume(0.3)
+        pygame.display.flip()
         
     def death(self, screen=screen, raison=None):
         '''Affiche l'écran de mort du joueur\n
@@ -72,7 +74,7 @@ class level():
         text_rect = button_text.get_rect(center=(width/2, height/2+150))
         screen.blit(button_text,text_rect)
         pygame.display.flip()
-        tmp = self.wait(500)
+        tmp = self.wait(650)
         pygame.mixer.music.stop()
         if tmp == "quit" or tmp == "exit":
             return tmp
@@ -153,7 +155,7 @@ class story():
                         try: TEXT3= choix3[2]
                         except:pass
                     if tt == 2 and nbchoix == 2:
-                        TEXT=choix2
+                        TEXT=choix2[0]
                         try: TEXT2= choix2[1]
                         except:pass
                         try: TEXT3= choix2[2]
@@ -284,13 +286,14 @@ class media():
         imgprint = pygame.transform.scale(img,scale)
         screen.blit(imgprint,pos)
     
-    def sound(self, file, vol=0.5):
+    def sound(self, file, vol=0.5, loop=False):
         '''Jouer un son\n
         `file` = fichier du son\n
         `vol` = volume du son\n'''
         sound = pygame.mixer.Sound(file)
         sound.set_volume(vol)
-        sound.play()
+        if loop: sound.play(-1)
+        else: sound.play()
     
     class save_file:
         '''Contient les fonction pour sauvegarder et lire les fichiers des niveaux

@@ -20,6 +20,7 @@ class Game:
         # Importation des niveaux (oui je le fait en plain millieu XD)
         from nvx.tuto import Tuto
         from nvx.exemple import dawa
+        from nvx.nvx1_Z import Level1_Z
 
         def play(self, screen, level, dialog, name):
             level = int(level)
@@ -37,10 +38,13 @@ class Game:
                     return nvx[0], nvx[1], nvx[2], False
 
             elif name == "Zach":
-                if level == 0:
-                    file = "nvx/tuto.py"
-                elif level == 1:
-                    file = "nvx/nvx1.py"
+                if level == 1:
+                    nvx = self.Level1_Z().game(screen, dialog, name)
+                    pygame.mixer.music.stop()
+                    if nvx[3] == True:
+                        return nvx[0], nvx[1], nvx[2], True
+                    else:
+                        return nvx[0], nvx[1], nvx[2], False
                 elif level == 2:
                     file = "nvx/nvx2.py"
                 elif level == 3:
@@ -48,9 +52,7 @@ class Game:
                 elif level == 4:
                     file = "nvx/nvx4.py"
             elif name == "Angela":
-                if level == 0:
-                    file = "nvx/tuto.py"
-                elif level == 1:
+                if level == 1:
                     file = "nvx/nvx1A.py"
                 elif level == 2:
                     file = "nvx/nvx2A.py"
@@ -59,9 +61,7 @@ class Game:
                 elif level == 4:
                     file = "nvx/nvx4A.py"
             elif name == "UtopiaJr":
-                if level == 0:
-                    file = "nvx/tuto.py"
-                elif level == 1:
+                if level == 1:
                     file = "nvx/nvxU.py"
                 elif level == 2:
                     file = "nvx/nvxUU.py"

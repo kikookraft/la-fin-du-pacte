@@ -30,5 +30,5 @@ class Tuto:
         elif result == "quit": return 0, self.dialog, self.name, True
 
         pygame.mixer.stop()
-        return 1, self.dialog, self.name, False
+        return 1, 0, self.name, False
 
