@@ -9,7 +9,7 @@ class dawa:
         #changer le titre de la fenetre
         lvm.level().title("HAAAAAAAA ISSSOU")
         #initialisation
-        lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], "None", "Bidonville.jpg", "02.  Musique libre de droits  La Grande Table - Delnica-1.wav", True, name)
+        lvm.level().initialisation(screen, ["Zach.png"], [(650,220)], [(300,500)], "None", "Bidonville.jpg", "02.  Musique libre de droits  La Grande Table - Delnica-1.wav", True)
         #dialogue
         result = lvm.story().dialogue(["Bienvenu(e) dans le niveau d'exemple !", "Que veut-tu faire ?"], make_init=False)
         if result == "exit": return self.next_level, self.dialog, name, False
@@ -21,7 +21,7 @@ class dawa:
         elif result == "quit": return self.next_level, self.dialog, name, True
 
         #initialisation
-        elif result == 1: lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], "None", "bg.jpg", "lava.wav", True, name)
+        elif result == 1: lvm.level().initialisation(screen, ["Zach.png"], [(650,220)], [(300,500)], "None", "bg.jpg", "lava.wav", True, name)
         elif result == 2: 
             #dialogue
             result = lvm.story().dialogue(["Bon... ok!","Par contre je ne sait pas quoi dire..."])
@@ -54,7 +54,7 @@ class dawa:
             lvm.media().sound("assets/sounds/gunshot.wav", 1)
             lvm.media().sound("assets/sounds/gunshot.wav", 1)
             lvm.level().death(screen, "Finalement ca s'est mal passé...")
-            lvm.media().sound("assets/sounds/gunshot.wav", 1)
+            lvm.media().sound("assets/sounds/panpan.wav", 1)
             result = lvm.level().wait(100)
             if result == "exit": return self.next_level, self.dialog, name, False
             elif result == "quit": return self.next_level, self.dialog, name, True

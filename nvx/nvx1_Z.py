@@ -45,7 +45,9 @@ class Level1_Z:
                 result = lvm.story().dialogue(dial)
                 if result == "exit": return self.level, self.dialog, name, False
                 elif result == "quit": return self.level, self.dialog, name, True
+            self.dialog = 2
 
+        if self.dialog < 3:
             lvm.level().initialisation(screen, ["policier.png","Zach.png"], [(650,220),(150,220)], [(300,500),(300,500)], "None", "Bidonville.jpg", "None", False, name)    
             result = lvm.story().dialogue(["Zach : J'arrive","Policier : Dépêchez vous !"],make_init=False)
             if result == "exit": return self.level, self.dialog, name, False
@@ -66,20 +68,20 @@ class Level1_Z:
             lvm.level().wait(150)
             if result == "exit": return self.level, self.dialog, name, False
             elif result == "quit": return self.level, self.dialog, name, True
-            self.dialog = 2
+            self.dialog = 3
         
-
-        lvm.level().initialisation(screen, ["UtopiaJR.png"], [(650,220)], [(300,500)], "None", "background.jpg", "place de la tour.mp3", True, name)
-        lvm.media().sound("assets/sounds/foule.wav", loop=True)
-        result = lvm.story().dialogue(["Le policier vous emmène au centre de l’île, au pied de la tour où la population est rassemblé pour écouter le discours d’Utopia Jr, le Directeur de la société du même nom qui dirige l’île."])
-        if result == "exit": return self.level, self.dialog, name, False
-        elif result == "quit": return self.level, self.dialog, name, True
-
-        dialog_list = [["Utopia Jr: Bienvenue aux 10e death run !!!","Eh oui mes camarades cela fait 100 ans déjà que le pacte a été signé.","Une sombre époque pour nous tous."],["Rappelez vous des souffrances qu’ont enduré notre peuple à cause de résistant anarchique.","Souvenez vous des terribles conséquences qu’ont engendré cette hérésie appelé révolution."],["Mon père a malheureusement dut sévir à l’époque mais pour vous remettre dans le droit chemin.","Vous êtes la base de la société et vous devez donc vivre sous le sommet.","Sans cet équilibre notre civilisation meurt."],["Cela peut paraître injuste mais vous êtes né ainsi, c’est votre seul but."],["Heureusement par extrême générosité, nous permettons tous les 10 ans à 10 d’entre vous de rentrer dans notre élite,","parmi les grands de notre société."],["Mais parce que rien est gratuit vous devrez prouvez votre valeur dans les death run !","J’ai a coté de moi, dans mon bureau 10 urnes avec les noms de millions d’âmes, les vôtres,","et seule 10 d’entre elles pourront prétendre a rejoindre l’élite."],["Narateur: Le Directeur annonce un a un les noms de ce que le peuples appelait les condamné car tous savais qu’il était presque impossible de survivre..."],["Notre personnage regarde les condamné avec pitié mais n’avait pas peur d’être tiré au sort car les chance était trop mince..."],["Le Directeur : Zach, fils de ... personne"]]
-        for dial in dialog_list:
-            result = lvm.story().dialogue(dial)
+        if self.dialog < 4:
+            lvm.level().initialisation(screen, ["UtopiaJR.png"], [(650,220)], [(300,500)], "None", "background.jpg", "place de la tour.mp3", True, name)
+            lvm.media().sound("assets/sounds/foule.wav", loop=True)
+            result = lvm.story().dialogue(["Le policier vous emmène au centre de l’île, au pied de la tour où la population est rassemblé pour écouter le discours d’Utopia Jr, le Directeur de la société du même nom qui dirige l’île."])
             if result == "exit": return self.level, self.dialog, name, False
             elif result == "quit": return self.level, self.dialog, name, True
+
+            dialog_list = [["Utopia Jr: Bienvenue aux 10e death run !!!","Eh oui mes camarades cela fait 100 ans déjà que le pacte a été signé.","Une sombre époque pour nous tous."],["Rappelez vous des souffrances qu’ont enduré notre peuple à cause de résistant anarchique.","Souvenez vous des terribles conséquences qu’ont engendré cette hérésie appelé révolution."],["Mon père a malheureusement dut sévir à l’époque mais pour vous remettre dans le droit chemin.","Vous êtes la base de la société et vous devez donc vivre sous le sommet.","Sans cet équilibre notre civilisation meurt."],["Cela peut paraître injuste mais vous êtes né ainsi, c’est votre seul but."],["Heureusement par extrême générosité, nous permettons tous les 10 ans à 10 d’entre vous de rentrer dans notre élite,","parmi les grands de notre société."],["Mais parce que rien est gratuit vous devrez prouvez votre valeur dans les death run !","J’ai a coté de moi, dans mon bureau 10 urnes avec les noms de millions d’âmes, les vôtres,","et seule 10 d’entre elles pourront prétendre a rejoindre l’élite."],["Narateur: Le Directeur annonce un a un les noms de ce que le peuples appelait les condamné car tous savais qu’il était presque impossible de survivre..."],["Notre personnage regarde les condamné avec pitié mais n’avait pas peur d’être tiré au sort car les chance était trop mince..."],["Le Directeur : Zach, fils de ... personne"]]
+            for dial in dialog_list:
+                result = lvm.story().dialogue(dial)
+                if result == "exit": return self.level, self.dialog, name, False
+                elif result == "quit": return self.level, self.dialog, name, True
 
         return self.next_level, 0, name, False
 
