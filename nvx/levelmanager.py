@@ -17,7 +17,7 @@ class level():
     `title`\n'''
     init_lvl = []
 
-    def initialisation(self, screen, imgperso=["perso1.png","perso2.png"], posperso=[(650,220),(150,220)], scaleperso=[(300,500),(300,500)], weapon=["None","None"], background="None.jpg", music="None.wav", restart_music=False, name="None"):
+    def initialisation(self, screen, imgperso=["perso1.png","perso2.png"], posperso=[(650,220),(150,220)], scaleperso=[(300,500),(300,500)], weapon=["None","None"], background="None.jpg", music="None.wav", restart_music=False, name="None", vol=0.3):
         '''Permet d'initialiser l'écran!\n
         `screen` = écran (variable screen),\n 
         `imgperso` = images de chaque personnages, écrire `perso` pour utiliser le personnage du joueur (liste),\n 
@@ -54,7 +54,7 @@ class level():
             pygame.mixer.music.stop()
             pygame.mixer.music.load("assets/sounds/%s" %(music))
             pygame.mixer.music.play(loops=-1) 
-            pygame.mixer.music.set_volume(0.3)
+            pygame.mixer.music.set_volume(vol)
         pygame.display.flip()
         
     def death(self, screen=screen, raison=None):
@@ -303,12 +303,12 @@ class media():
         '''
 
         def create(self, file_name, data):
-            with open("level_data"+str(file_name), 'w') as outfile:
+            with open("nvx/level_data/"+str(file_name), 'w') as outfile:
                 json.dump(data, outfile, indent=4)
         
         def read(self, file_name):
             try:
-                with open("level_data"+str(file_name), "r") as f:
+                with open("nvx/level_data/"+str(file_name), "r") as f:
                     data = json.load(f)
                 return data
             except FileNotFoundError: raise FileNotFoundError("Le fichier '{}' n'a pas été trouvé!".format(file_name))

@@ -21,6 +21,7 @@ class Game:
         from nvx.tuto import Tuto
         from nvx.exemple import dawa
         from nvx.nvx1_Z import Level1_Z
+        from nvx.nvx2_Z import Level2_Z
 
         def play(self, screen, level, dialog, name):
             level = int(level)
@@ -46,7 +47,12 @@ class Game:
                     else:
                         return nvx[0], nvx[1], nvx[2], False
                 elif level == 2:
-                    file = "nvx/nvx2.py"
+                    nvx = self.Level2_Z().game(screen, dialog, name)
+                    pygame.mixer.music.stop()
+                    if nvx[3] == True:
+                        return nvx[0], nvx[1], nvx[2], True
+                    else:
+                        return nvx[0], nvx[1], nvx[2], False
                 elif level == 3:
                     file = "nvx/nvx3.py"
                 elif level == 4:
