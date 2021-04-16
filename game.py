@@ -137,7 +137,7 @@ class Game:
             speed = 1
         else:
             modified = True
-            speed = 3
+            speed = 2
         credit = True
         bgpos = 0
 
@@ -310,5 +310,5 @@ class Game:
                     self.fadeout()
                     return
 
-                self.clock.tick(100)
+                self.clock.tick(60)
                 pygame.display.flip()

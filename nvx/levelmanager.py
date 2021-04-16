@@ -43,8 +43,10 @@ class level():
                 if perso == "perso" and name != "None":
                     perso = str(name+".png")
                 boy = pygame.image.load(str("assets/"+str(perso)))
-                scalepersotmp = scaleperso[imgperso.index(persosave)]
-                pospersotmp = posperso[imgperso.index(persosave)]
+                scalepersotmp_raw = scaleperso[imgperso.index(persosave)]
+                scalepersotmp = (scalepersotmp_raw[0]*width/1080,scalepersotmp_raw[1]*height/720)
+                posperso_raw = posperso[imgperso.index(persosave)]
+                pospersotmp = (posperso_raw[0]*width/1080,posperso_raw[1]*height/720)
                 if scaleperso != "None": boyr = pygame.transform.scale(boy,(int(scalepersotmp[0]),int(scalepersotmp[1])))
                 screen.blit(boyr,(int(pospersotmp[0]),int(pospersotmp[1])))
         #musique
@@ -68,7 +70,8 @@ class level():
         font = pygame.font.SysFont('Helvetica', 40, bold=True)
         screen.fill((0,0,0))
         background_death = pygame.image.load("assets/death.jpg").convert()
-        screen.blit(background_death,(0,0))
+        bgd_death = pygame.transform.scale(background_death, (width,height))
+        screen.blit(bgd_death,(0,0))
         #afficher raison de mort
         button_text = font.render(raison, True, (255, 25, 25))
         text_rect = button_text.get_rect(center=(width/2, height/2+150))

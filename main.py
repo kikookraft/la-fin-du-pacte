@@ -29,7 +29,7 @@ if width == 1080 and height == 720:
     speed = 1
 else:
     modified = True
-    speed = 3
+    speed = 2
 width_box = 320
 height_box = 75
 nbbtn = 3
@@ -37,8 +37,8 @@ font = pygame.font.SysFont('Helvetica', 60, bold=True)
 font2 = pygame.font.SysFont('Helvetica', 50, bold=True)
 TEXT=""
 COLOR = (100, 5, 5)
-mnumove = -800
-mnumove2 = 1300
+mnumove = -800*width/1080
+mnumove2 = 1300*width/1080
 stmn = 1
 pygame.key.set_repeat(5000,1000)
  
@@ -48,7 +48,7 @@ screen.blit(background, (0,0))
 logo = pygame.image.load('assets/logo.png').convert_alpha()
  
 #Activer la boucle du jeux (pour que le jeux ne dure pas 1 miliseconde)
-ypos= 0
+ypos = 0
 men = True
 HT = True
 ingame = 0
@@ -67,7 +67,6 @@ dimension_fondx2 = logo.get_width()
 dimension_fondy2 = logo.get_height()
 xmin2 = (info.current_w - dimension_fondx2) / 2
 ymin2 = (info.current_h - dimension_fondy2) / 2
-xmax2 = info.current_w - xmin2
 ymax2 = info.current_h - ymin2
 position_fond2 = (xmin2, ymin2)
 ypos2 = ymin2
@@ -76,10 +75,11 @@ logovar = 1
 #image de fond
 dimension_fondx = background.get_width()
 dimension_fondy = background.get_height()
-xmin = (info.current_w - dimension_fondx) / 2
-ymin = (info.current_h - dimension_fondy) / 2
-xmax = info.current_w - xmin
-ymax = info.current_h - ymin
+xmin = (width - dimension_fondx) /2
+#ymin = (height - dimension_fondy) / 2
+#ymax = height - ymin
+ymin = -500
+ymax = -dimension_fondy + height
 position_fond = (xmin, ymin)
 
 
@@ -118,9 +118,9 @@ while men:
             ypos = ypos + speed
         if ypos > 0 :
             HT = False
-        if not ypos < -1640 and HT==False:
+        if not ypos < ymax and HT==False:
             ypos = ypos - speed
-        if ypos < -width-200 :
+        if ypos < ymax :
             HT = True
  
     #quitter la fenetre et detection de touches
