@@ -2,6 +2,7 @@ import pygame
 import os
 import sys
 import json
+import math
 
 screen = pygame.display.set_mode((1080,720))
 info = pygame.display.Info()
@@ -49,6 +50,12 @@ class level():
                 pospersotmp = (posperso_raw[0]*width/1080,posperso_raw[1]*height/720)
                 if scaleperso != "None": boyr = pygame.transform.scale(boy,(int(scalepersotmp[0]),int(scalepersotmp[1])))
                 screen.blit(boyr,(int(pospersotmp[0]),int(pospersotmp[1])))
+                try:
+                    if weapon[imgperso.index(persosave)] not in ["None", "none", None]: 
+                        arme_raw = pygame.image.load("assets/"+str(weapon[imgperso.index(persosave)]))
+                        arme = pygame.transform.scale(arme_raw,(math.ceil(80*width/1080),math.ceil(80*height/720)))
+                        screen.blit(arme,(int(pospersotmp[0]),int(pospersotmp[1])))
+                except IndexError: pass
         #musique
         if restart_music and music != "None":
             pygame.mixer.music.stop()

@@ -1,6 +1,6 @@
 # -*- coding : utf8 -*-
 import pygame
-from game import Game
+import game
 import os
 pygame.init()
 level = 0
@@ -9,7 +9,7 @@ name = "None"
 clock=pygame.time.Clock()
  
 #charger le jeux et les scores
-game = Game()
+game = game.Game()
 scre = game.score().load()
 level = scre[0]
 dialog = scre[1]
