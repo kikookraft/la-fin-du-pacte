@@ -6,7 +6,7 @@ class Tuto:
     dialog = 0
 
     def game(self, screen):
-        lvm.level().initialisation(screen, "None", "None", "None", "None", "choix-perso.jpg", "02.  Musique libre de droits  La Grande Table - Delnica-1.wav", True)
+        lvm.level().initialisation(screen, background="choix-perso.jpg", music="02.  Musique libre de droits  La Grande Table - Delnica-1.wav", restart_music=True)
         result = lvm.story().dialogue(["Inconnue - Ho tiens, salut !","Comment tu t'appelle ?"], make_init=False)
         if result == "exit": return 0, self.dialog, self.name, False
         elif result == "quit": return 0, self.dialog, self.name, True
@@ -23,7 +23,7 @@ class Tuto:
             elif result == "quit": return 0, self.dialog, self.name, True
             return 0, 0, "None", False
         
-        lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], "None", "Bidonville.jpg", "None", False, self.name)
+        lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["None"], "Bidonville.jpg", "None", False, self.name)
         
         lvm.story().dialogue(["Inconnue - Ok, dépeche-toi de te préparer {}".format(self.name),"les policiers vont arriver !"],0)
         if result == "exit": return 0, self.dialog, self.name, False

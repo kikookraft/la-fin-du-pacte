@@ -18,7 +18,7 @@ class level():
     `title`\n'''
     init_lvl = []
 
-    def initialisation(self, screen, imgperso=["perso1.png","perso2.png"], posperso=[(650,220),(150,220)], scaleperso=[(300,500),(300,500)], weapon=["None","None"], background="None.jpg", music="None.wav", restart_music=False, name="None", vol=0.3):
+    def initialisation(self, screen, imgperso=["perso1.png","perso2.png"], posperso=[(650,220),(300,500)], scaleperso=[(300,500),(300,500)], weapon=["None"], background="None", music="None", restart_music=False, name="None", vol=0.3):
         '''Permet d'initialiser l'écran!\n
         `screen` = écran (variable screen),\n 
         `imgperso` = images de chaque personnages, écrire `perso` pour utiliser le personnage du joueur (liste),\n 
@@ -32,30 +32,37 @@ class level():
         #enregister variable pour les dialogues
         level.init_lvl = [screen, imgperso, posperso, scaleperso, weapon, background, music, False, name]
         #écran de fond
-        if background not in ["None",None,"None.jpg"]:
+        if background not in ["None",None,"None.jpg","none"]:
+            background1 = str('assets/bg/{}'.format(background))
+            bgd = pygame.image.load(background1)
+            bgd = pygame.transform.scale(bgd, (width,height))
+            screen.blit(bgd, bgd.get_rect())
+        else:
+            background = "noir.jpg"
             background1 = str('assets/bg/{}'.format(background))
             bgd = pygame.image.load(background1)
             bgd = pygame.transform.scale(bgd, (width,height))
             screen.blit(bgd, bgd.get_rect())
         #personnage
-        if imgperso[0] != "None" and imgperso != "None":
-            for perso in imgperso:
-                persosave = perso
-                if perso == "perso" and name != "None":
-                    perso = str(name+".png")
-                boy = pygame.image.load(str("assets/"+str(perso)))
-                scalepersotmp_raw = scaleperso[imgperso.index(persosave)]
-                scalepersotmp = (scalepersotmp_raw[0]*width/1080,scalepersotmp_raw[1]*height/720)
-                posperso_raw = posperso[imgperso.index(persosave)]
-                pospersotmp = (posperso_raw[0]*width/1080,posperso_raw[1]*height/720)
-                if scaleperso != "None": boyr = pygame.transform.scale(boy,(int(scalepersotmp[0]),int(scalepersotmp[1])))
-                screen.blit(boyr,(int(pospersotmp[0]),int(pospersotmp[1])))
-                try:
-                    if weapon[imgperso.index(persosave)] not in ["None", "none", None]: 
-                        arme_raw = pygame.image.load("assets/"+str(weapon[imgperso.index(persosave)]))
-                        arme = pygame.transform.scale(arme_raw,(math.ceil(80*width/1080),math.ceil(80*height/720)))
-                        screen.blit(arme,(int(pospersotmp[0]),int(pospersotmp[1])))
-                except IndexError: pass
+        not_perso = ["None","none","perso1.png","perso2.png",None]
+        for perso in imgperso:
+            if perso in not_perso: break
+            persosave = perso
+            if perso == "perso" and name != "None":
+                perso = str(name+".png")
+            boy = pygame.image.load(str("assets/"+str(perso)))
+            scalepersotmp_raw = scaleperso[imgperso.index(persosave)]
+            scalepersotmp = (scalepersotmp_raw[0]*width/1080,scalepersotmp_raw[1]*height/720)
+            posperso_raw = posperso[imgperso.index(persosave)]
+            pospersotmp = (posperso_raw[0]*width/1080,posperso_raw[1]*height/720)
+            if scaleperso != "None": boyr = pygame.transform.scale(boy,(int(scalepersotmp[0]),int(scalepersotmp[1])))
+            screen.blit(boyr,(int(pospersotmp[0]),int(pospersotmp[1])))
+            try:
+                if weapon[imgperso.index(persosave)] not in ["None", "none", None]: 
+                    arme_raw = pygame.image.load("assets/"+str(weapon[imgperso.index(persosave)]))
+                    arme = pygame.transform.scale(arme_raw,(math.ceil(80*width/1080),math.ceil(80*height/720)))
+                    screen.blit(arme,(int(pospersotmp[0]),int(pospersotmp[1])))
+            except IndexError: pass
         #musique
         if restart_music and music != "None":
             pygame.mixer.music.stop()

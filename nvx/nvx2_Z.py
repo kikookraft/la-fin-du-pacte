@@ -21,7 +21,6 @@ class Level2_Z:
                 elif result == "quit": return self.level, self.dialog, name, True
             self.dialog = 1
 
-
         if self.dialog < 2:
             lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["None"], "night-desert-original.jpg", "desert.mp3", True, name, 1)
 
@@ -64,7 +63,7 @@ class Level2_Z:
                 elif result == "quit": return self.level, self.dialog, name, True
             self.dialog = 4
 
-        #choix descisifs
+        #choix importants
         if weapon == "hache": 
             if self.dialog < 5:
                 lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["hache.png"], "night-desert-zombie.jpg", "desert.mp3", True, name, 1)
@@ -76,7 +75,7 @@ class Level2_Z:
             else: 
                 result = lvm.media().save_file().read("nvx2_Z/fuite.json")
                 result = result['choice']
-            if result == 1: 
+            if result == 1: #fuir les zombies
                 if self.dialog < 6:    
                     lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["hache.png"], "night-desert-zombie.jpg", "desert.mp3", True, name, 1)
                     result = lvm.story().dialogue(["Présentateur 1: Ah Zach décide de prendre les jambes à son cou !!","Heureusement qu’il a pris la hache car la masse l’aurais ralenti !","Tiens pas loin se trouve un combattant en difficulté !"])
@@ -92,7 +91,20 @@ class Level2_Z:
                     result = lvm.media().save_file().read("nvx2_Z/aide.json")
                     result = result['choice']
 
-            elif result == 2: pass
+            elif result == 2: #combattre les zombies
+                if self.dialog < 6: 
+                    lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["hache.png"], "night-desert-zombie.jpg", "desert.mp3", True, name, 1)
+                    intro=[["Présentateur 2 : Zach fonce sur les zombies !! Ils les tue à la chaine !!"],["Présentateur 1 : Je n’ai jamais vu quelqu’un manier aussi bien la hache !","Quels panache !","Regardez il envoie sa hache sur un ennemi..."],["En pleine tête !!","Attendez il n'a plus d’arme du coup ?"]]
+                    for dial in intro:
+                        result = lvm.story().dialogue(dial)
+                        if result == "exit": return self.level, self.dialog, name, False
+                        elif result == "quit": return self.level, self.dialog, name, True
+                    lvm.level().initialisation(screen)
+                    result = lvm.story().dialogue(["Narrateur : Dans le feu de l’action vous avez abandonné votre arme.","Vous finissez dévoré par une horde de zombies..."])
+                    if result == "exit": return self.level, self.dialog, name, False
+                    elif result == "quit": return self.level, self.dialog, name, True
+                    lvm.level().death(screen, "Vous avez fait le festin des zombies")
+                    self.dialog = 6
 
         elif weapon == "poing_am":
             lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["poing_am.png"], "night-desert-zombie.jpg", "desert.mp3", True, name, 1)

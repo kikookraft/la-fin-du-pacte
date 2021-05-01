@@ -35,7 +35,7 @@ class Level1_Z:
             elif result == "quit": return self.level, self.dialog, name, True
 
             lvm.media().sound("assets/sounds/porte.wav", 1)
-            lvm.level().initialisation(screen, ["policier.png"], [(650,220)], [(300,500)], "None", "Bidonville.jpg", "None", False, name)
+            lvm.level().initialisation(screen, ["policier.png"], [(650,220)], [(300,500)], ["None"], "Bidonville.jpg", "None", False, name)
             lvm.level().wait(100)
             if result == "exit": return self.level, self.dialog, name, False
             elif result == "quit": return self.level, self.dialog, name, True
@@ -48,7 +48,7 @@ class Level1_Z:
             self.dialog = 2
 
         if self.dialog < 3:
-            lvm.level().initialisation(screen, ["policier.png","Zach.png"], [(650,220),(150,220)], [(300,500),(300,500)], "None", "Bidonville.jpg", "None", False, name)    
+            lvm.level().initialisation(screen, ["policier.png","Zach.png"], [(650,220),(150,220)], [(300,500),(300,500)], ["None"], "Bidonville.jpg", "None", False, name)    
             result = lvm.story().dialogue(["Zach : J'arrive","Policier : Dépêchez vous !"],make_init=False)
             if result == "exit": return self.level, self.dialog, name, False
             elif result == "quit": return self.level, self.dialog, name, True
@@ -71,7 +71,7 @@ class Level1_Z:
             self.dialog = 3
         
         if self.dialog < 4:
-            lvm.level().initialisation(screen, ["UtopiaJR.png"], [(650,220)], [(300,500)], "None", "background.jpg", "place de la tour.mp3", True, name)
+            lvm.level().initialisation(screen, ["UtopiaJR.png"], [(650,220)], [(300,500)], ["None"], "background.jpg", "place de la tour.mp3", True, name)
             lvm.media().sound("assets/sounds/foule.wav", loop=True)
             result = lvm.story().dialogue(["Le policier vous emmène au centre de l’île, au pied de la tour où la population est rassemblé pour écouter le discours d’Utopia Jr, le Directeur de la société du même nom qui dirige l’île."])
             if result == "exit": return self.level, self.dialog, name, False
