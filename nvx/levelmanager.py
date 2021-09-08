@@ -216,7 +216,7 @@ class story():
                         choice = False
                         return 3
     
-    def dialogue(self, list_dialog=["Prhase numéro une","Phrase numéro 2"], time_between=10, make_init=True):
+    def dialogue(self, list_dialog=["Prhase numéro une","Phrase numéro 2"], time_between=10, make_init=True, no_wait=False):
         '''Pour créer un écran de choix\n
         `list_dialog` = Liste des phrases a afficher (liste de str)\n
         `time_between` = Temp d'attente entre chaque dialogue avant d'afficher le prochain (temp en sec * 100  , 1 sec => 100)\n
@@ -275,7 +275,7 @@ class story():
         fnd.fill((255,255,255))
         screen.blit(fnd, (width-20, 0))
         pygame.display.flip()
-        while nb == 0:
+        while nb == 0 and not no_wait:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN: #and event.key == pygame.K_s
                     nb = 1

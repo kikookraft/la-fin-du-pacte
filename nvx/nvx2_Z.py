@@ -22,7 +22,7 @@ class Level2_Z:
             self.dialog = 1
 
         if self.dialog < 2:
-            lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["None"], "night-desert-original.jpg", "desert.mp3", True, name, 1)
+            lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["None"], "night-desert-original.jpg", "desert.mp3", False, name, 1)
 
             intro = [["Présentateur 1 : Haaaa cette année c’est dans un désert que va se produire la première épreuve.","Présentateur 2 : Et un petit rappel des règle s’impose pour les nouveaux qui ne connaissent pas cette épreuve."],["Présentateur 2 : Pour la première épreuve, l’épreuve de survie, les participants vont devoir survivre durant une nuit. Tout ceux qui auront survécu pourront accéder à la prochaine épreuve."],["Présentateur 1 : Mais nous n’allons pas les laisser sans défense ?"],["Présentateur 2 : Non, avant de commencer ils vont choisir entre entre une hache, des poings américains et une grande masse."]]
             for dial in intro:
@@ -32,7 +32,7 @@ class Level2_Z:
             self.dialog = 2
 
         if self.dialog < 3 or weapon == None:
-            lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["None"], "night-desert-original.jpg", "desert.mp3", True, name, 1)
+            lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["None"], "night-desert-original.jpg", "desert.mp3", False, name, 1)
             result = lvm.story().choice(screen, 3, ["Prendre la Hache"],["Prendre Les Poings","Américains"],["Prendre la masse"," "])
             if result == "exit": return self.level, self.dialog, name, False
             elif result == "quit": return self.level, self.dialog, name, True
@@ -55,7 +55,7 @@ class Level2_Z:
             self.dialog = 3
         
         if self.dialog < 4:
-            lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["None"], "night-desert-original.jpg", "desert.mp3", True, name, 1)
+            lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["None"], "night-desert-original.jpg", "desert.mp3", False, name, 1)
             intro = [["Les death run vont bientôt commencer","Présentateur 1 : L’arbitre va annoncer le compte très bientôt…"],["Arbitre : 10   9   8   7   6   5   4   3   2   1   0","Que les death run commencent !!!"],["Présentateur 2 : On vient de m’apprendre que des zombies étaient arrivé dans le centre de l’arène,","cette année les organisateurs n’y sont pas allé de main de morte !!"]]
             for dial in intro:
                 result = lvm.story().dialogue(dial)
@@ -75,9 +75,10 @@ class Level2_Z:
             else: 
                 result = lvm.media().save_file().read("nvx2_Z/fuite.json")
                 result = result['choice']
+
             if result == 1: #fuir les zombies
                 if self.dialog < 6:    
-                    lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["hache.png"], "night-desert-zombie.jpg", "desert.mp3", True, name, 1)
+                    lvm.level().initialisation(screen, ["perso"], [(650,220)], [(300,500)], ["hache.png"], "night-desert-zombie.jpg", "desert.mp3", False, name, 1)
                     result = lvm.story().dialogue(["Présentateur 1: Ah Zach décide de prendre les jambes à son cou !!","Heureusement qu’il a pris la hache car la masse l’aurais ralenti !","Tiens pas loin se trouve un combattant en difficulté !"])
                     if result == "exit": return self.level, self.dialog, name, False
                     elif result == "quit": return self.level, self.dialog, name, True
@@ -90,6 +91,59 @@ class Level2_Z:
                 else: 
                     result = lvm.media().save_file().read("nvx2_Z/aide.json")
                     result = result['choice']
+
+                if result == 1: #aider max
+                    if self.dialog < 7:    
+                        lvm.level().initialisation(screen, ["perso","Max.png"], [(650,220),(300,220)], [(300,500),(300,500)], ["hache.png"], "night-desert.jpg", "desert.mp3", False, name, 1)
+                        intro = (["Présentateur 2 : Attendez je vois Zach courir à son secour, c’est incroyable il est entrain de le sauver !", "Je crois qu’une alliance viens de se former !!"],["Max : Merci mon nom est Max ","Zach : Moi c’est Zach ","Max : Dépêchons-nous ils reviennent !"])
+                        for dial in intro:
+                            result = lvm.story().dialogue(dial, make_init=True)
+                            if result == "exit": return self.level, self.dialog, name, False
+                            elif result == "quit": return self.level, self.dialog, name, True
+
+                        lvm.level().initialisation(screen, ["perso","Max.png"], [(650,220),(300,220)], [(300,500),(300,500)], ["hache.png"], "night-desert-zombie.jpg", "desert.mp3", False, name, 1)
+                        intro = (["Présentateur 1 : C’est beau l’amitié, ils vont pouvoir fuir main dans la main. "],["Présentateur 2 : Je crois que la première mort approche,", "regardez!", "deux jeunes enfants se sont fait encerclés…"],["Zach et Max ne sont pas loin,","ils vont sûrement vouloir jouer les héros !"])
+                        for dial in intro:
+                            result = lvm.story().dialogue(dial, make_init=True)
+                            if result == "exit": return self.level, self.dialog, name, False
+                            elif result == "quit": return self.level, self.dialog, name, True
+
+                        result = lvm.story().choice(screen, 2, ["Aider les enfants"], ["Abandoner les gosses"])
+                        if result == "exit": return self.level, self.dialog, name, False
+                        elif result == "quit": return self.level, self.dialog, name, True
+                        lvm.media().save_file().create("nvx2_Z/aide_2.json", {'choice':result})
+                        self.dialog = 7
+                    else: 
+                        result = lvm.media().save_file().read("nvx2_Z/aide_2.json")
+                        result = result['choice']
+
+                    if result == 1: #aider les enfants
+                        if self.dialog < 8:    
+                            lvm.level().initialisation(screen, ["perso","Max.png"], [(650,220),(300,220)], [(300,500),(300,500)], ["hache.png"], "night-desert.jpg", "desert.mp3", False, name, 1)
+                            intro = (["Zach : On y va !","Max : Non ils n’en valent pas la peine !"],["Présentateur 1 : Je crois que leur amitié ne vas pas durer."])
+                            for dial in intro:
+                                result = lvm.story().dialogue(dial, make_init=True)
+                                if result == "exit": return self.level, self.dialog, name, False
+                                elif result == "quit": return self.level, self.dialog, name, True
+                            
+                            lvm.story().dialogue(["Regardez, Zach et Max se dispu…"],no_wait=True)
+                            lvm.level().wait(50)
+                            lvm.media().sound("assets/sounds/decapitation.wav")
+                            lvm.level().initialisation(screen, ["None"], [(650,220)], [(300,500)], ["None"], "night-desert-kill.jpg", "desert.mp3", False, name, 1)
+                            result = lvm.story().dialogue(["Narrateur : Le présentateur reste figé par la haine de votre allié.","Il a pris votre hache et vous a décapité. Vous étiez devenu un poids."], make_init=True)
+                            if result == "exit": return self.level, self.dialog, name, False
+                            elif result == "quit": return self.level, self.dialog, name, True
+                                
+                            lvm.level().death(screen, "Vous ralentissez Max !")
+                            self.dialog = 8
+                        else: 
+                            result = lvm.media().save_file().read("nvx2_Z/aide_2.json")
+                            result = result['choice']
+                    elif result == 2: #laisser les enfants mourir
+                        pass
+
+                elif result == 2: #laisser max
+                    pass
 
             elif result == 2: #combattre les zombies
                 if self.dialog < 6: 
